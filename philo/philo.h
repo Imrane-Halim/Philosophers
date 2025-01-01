@@ -22,15 +22,17 @@
 
 typedef struct s_philo
 {
-	int	time_to_die;
-	int	time_to_eat;
-	int	time_to_sleep;
 	int	eat_times;
+	int	n_forks;
 }	t_philo;
 
 typedef struct s_data
 {
 	int		num_of_philos;
+	int		times_to_eat;
+	int		time_to_die;
+	int		time_to_eat;
+	int		time_to_sleep;
 	t_philo	*philos;
 }	t_data;
 
