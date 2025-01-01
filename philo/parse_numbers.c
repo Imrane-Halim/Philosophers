@@ -6,13 +6,13 @@
 /*   By: ihalim <ihalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 11:28:32 by ihalim            #+#    #+#             */
-/*   Updated: 2025/01/01 15:07:30 by ihalim           ###   ########.fr       */
+/*   Updated: 2025/01/01 15:58:39 by ihalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static long	ft_atol(char *s)
+int	ft_atoi(char *s)
 {
 	int	res;
 	int	sign;
@@ -31,10 +31,10 @@ static long	ft_atol(char *s)
 	{
 		res = (res * 10) + (*s - '0');
 		if (res < 0)
-			return (ULONG_MAX);
+			return (-1);
 		s++;
 	}
-	return ((long)res * sign);
+	return (res * sign);
 }
 
 static int	is_valid_num(char *s)
@@ -57,9 +57,9 @@ static int	is_valid_num(char *s)
 
 static int	is_valid_range(char *s)
 {
-	long	n;
+	int	n;
 
-	n = ft_atol(s);
+	n = ft_atoi(s);
 	return (n >= 0 && n <= INT_MAX);
 }
 
