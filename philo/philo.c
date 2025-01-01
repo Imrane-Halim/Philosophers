@@ -6,7 +6,7 @@
 /*   By: ihalim <ihalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 10:27:39 by ihalim            #+#    #+#             */
-/*   Updated: 2025/01/01 18:02:39 by ihalim           ###   ########.fr       */
+/*   Updated: 2025/01/01 18:06:06 by ihalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	run_simulation(t_data *data)
 t_data	init_struct(int ac, char **av)
 {
 	t_data	data;
-	
+
 	data.num_of_philos = ft_atoi(av[1]);
 	data.time_to_die = ft_atoi(av[2]);
 	data.time_to_eat = ft_atoi(av[3]);
@@ -40,8 +40,8 @@ int	main(int ac, char **av)
 	{
 		write(STDERR_FILENO,
 			"usage: ./philo <N_PHILO> <DEATH_TIME>"
-			" <EAT_TIME> <SLEEP_TIME>[<N_EAT_TIMES>]\n",
-			78);
+			" <EAT_TIME> <SLEEP_TIME> [<N_EAT_TIMES>]\n",
+			79);
 		return (EXIT_FAILURE);
 	}
 	if (!are_valid_args(ac, av))
