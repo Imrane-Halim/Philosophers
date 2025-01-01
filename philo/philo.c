@@ -6,7 +6,7 @@
 /*   By: ihalim <ihalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 10:27:39 by ihalim            #+#    #+#             */
-/*   Updated: 2025/01/01 10:53:09 by ihalim           ###   ########.fr       */
+/*   Updated: 2025/01/01 11:30:28 by ihalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 int	main(int ac, char **av)
 {
-	(void)av;
 	if (ac < 4 || ac > 5)
 	{
 		write(STDERR_FILENO,
@@ -23,5 +22,7 @@ int	main(int ac, char **av)
 			66);
 		return (EXIT_FAILURE);
 	}
+	if (!are_valid_args(ac, av))
+		return (EXIT_FAILURE);
 	return (0);
 }

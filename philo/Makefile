@@ -1,7 +1,8 @@
-CFLAGS = -Wall -Wextra -Werror
-NAME = philo
-SRC = philo.c
-OBJ = $(SRC:.c=.o)
+NAME 	= philo
+CFLAGS 	= -Wall -Wextra -Werror
+
+SRC 	= philo.c parse_numbers.c
+OBJ 	= $(SRC:.c=.o)
 
 all: $(NAME)
 
