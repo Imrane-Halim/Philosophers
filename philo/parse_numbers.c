@@ -6,7 +6,7 @@
 /*   By: ihalim <ihalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 11:28:32 by ihalim            #+#    #+#             */
-/*   Updated: 2025/01/01 11:33:46 by ihalim           ###   ########.fr       */
+/*   Updated: 2025/01/01 15:07:30 by ihalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static long	ft_atol(char *s)
 {
-	long long	res;
-	int			sign;
+	int	res;
+	int	sign;
 
 	while ((*s >= 9 && *s <= 13) || *s == 32)
 		s++;
@@ -30,6 +30,8 @@ static long	ft_atol(char *s)
 	while (*s >= '0' && *s <= '9')
 	{
 		res = (res * 10) + (*s - '0');
+		if (res < 0)
+			return (ULONG_MAX);
 		s++;
 	}
 	return ((long)res * sign);
