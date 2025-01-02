@@ -22,18 +22,23 @@
 
 typedef struct s_philo
 {
-	int	eat_times;
-	int	n_forks;
+	int			eat_times;
+	int			n_forks;
+	int			is_dead;
+	int			philo_num;
+	pthread_t	th_id;
 }	t_philo;
 
 typedef struct s_data
 {
-	int		num_of_philos;
-	int		times_to_eat;
-	int		time_to_die;
-	int		time_to_eat;
-	int		time_to_sleep;
-	t_philo	*philos;
+	struct timeval	timestamp_start;
+	int				num_of_philos;
+	int				times_to_eat;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	pthread_mutex_t	mutex_fork;
+	t_philo			*philos;
 }	t_data;
 
 int	ft_atoi(char *s);
