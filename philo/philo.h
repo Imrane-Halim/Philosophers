@@ -20,13 +20,23 @@
 # include <limits.h>
 # include <sys/time.h>
 
+enum e_state
+{
+	EAT,
+	SLEEP,
+	THINK,
+	DEATH,
+	TOOK_FORK
+};
+
 typedef struct s_philo
 {
-	int			eat_times;
-	int			n_forks;
-	int			is_dead;
-	int			philo_num;
-	pthread_t	th_id;
+	int				eat_times;
+	int				n_forks;
+	int				last_meal_time;
+	enum e_state	state;
+	int				philo_num;
+	pthread_t		th_id;
 }	t_philo;
 
 typedef struct s_data
@@ -43,5 +53,6 @@ typedef struct s_data
 
 int	ft_atoi(char *s);
 int	are_valid_args(int ac, char **av);
+t_data	init_struct(int ac, char **av);
 
 #endif
