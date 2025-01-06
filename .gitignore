@@ -1,5 +1,5 @@
-# executable
-philo
+# ignore executable
+subdir/philo
 
 # Prerequisites
 *.d
