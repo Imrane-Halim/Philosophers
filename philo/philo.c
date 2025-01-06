@@ -3,23 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ihalim <ihalim@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 10:27:39 by ihalim            #+#    #+#             */
-/*   Updated: 2025/01/03 18:07:27 by ihalim           ###   ########.fr       */
+/*   Updated: 2025/01/06 17:52:55 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-void	run_philo_routine(t_philo *data)
-{
-	(void)data;
-}
-void	run_simulation(t_data *data)
-{
-	(void)data;
-}
 
 int	main(int ac, char **av)
 {

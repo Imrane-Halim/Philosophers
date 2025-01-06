@@ -55,5 +55,6 @@ int		ft_atoi(char *s);
 int		are_valid_args(int ac, char **av);
 t_data	init_struct(int ac, char **av);
 void	print_action(int time, int philo_num, enum e_state action);
+void	run_simulation(t_data *data);
 
 #endif
