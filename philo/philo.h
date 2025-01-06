@@ -31,8 +31,8 @@ enum e_state
 
 typedef struct s_philo
 {
-	int				eat_times;
-	int				n_forks;
+	int				eat_count;
+	pthread_mutex_t	mutex_fork;
 	int				last_meal_time;
 	enum e_state	state;
 	int				philo_num;
@@ -41,13 +41,12 @@ typedef struct s_philo
 
 typedef struct s_data
 {
-	struct timeval	timestamp_start;
+	int				time_elapsed;
 	int				num_of_philos;
-	int				times_to_eat;
+	int				time_to_eat;
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
-	pthread_mutex_t	mutex_fork;
 	t_philo			*philos;
 }	t_data;
 
