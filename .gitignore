@@ -1,6 +1,8 @@
 # ignore executable
 subdir/philo
 
+#ignore yass
+yass
 # Prerequisites
 *.d
 
