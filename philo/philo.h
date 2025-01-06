@@ -51,8 +51,9 @@ typedef struct s_data
 	t_philo			*philos;
 }	t_data;
 
-int	ft_atoi(char *s);
-int	are_valid_args(int ac, char **av);
+int		ft_atoi(char *s);
+int		are_valid_args(int ac, char **av);
 t_data	init_struct(int ac, char **av);
+void	print_action(int time, int philo_num, enum e_state action);
 
 #endif
