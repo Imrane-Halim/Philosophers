@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 17:53:00 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/07 09:25:27 by marvin           ###   ########.fr       */
+/*   Updated: 2025/01/07 09:33:37 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,9 @@ void	*routine(void *arg)
 	{
 		if (philo->next_state == EAT)
 			philo_eat(philo);
-		if (philo->next_state == SLEEP)
+		else if (philo->next_state == SLEEP)
 			philo_sleep(philo);
-		if (philo->next_state == THINK)
+		else if (philo->next_state == THINK)
 			philo_think(philo);
 	}
 	return (NULL);
