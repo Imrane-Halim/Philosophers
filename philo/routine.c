@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 17:53:00 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/07 17:07:30 by marvin           ###   ########.fr       */
+/*   Updated: 2025/01/07 18:04:38 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 void	philo_eat(t_philo *philo)
 {
 	long long	current_time;
-
+	
+	pthread_mutex_lock(&philo->fork_mutex);
 	if (philo->eat_count >= philo->data->meals_count
 		&& philo->data->meals_count != -1)
 	{
 		philo->data->stop = 1;
 		return ;
 	}
-	pthread_mutex_lock(&philo->fork_mutex);
 	current_time = get_current_time();
 	philo->last_meal_time = current_time;
 	pthread_mutex_lock(&philo->data->print_mutex);
