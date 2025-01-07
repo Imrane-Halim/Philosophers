@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 18:03:47 by ihalim            #+#    #+#             */
-/*   Updated: 2025/01/06 20:08:12 by marvin           ###   ########.fr       */
+/*   Updated: 2025/01/07 09:23:48 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,18 @@
 
 t_data	init_struct(int ac, char **av)
 {
-	t_data	data;
+	static t_data	data;
 	int		i;
 
 	data.num_of_philos = ft_atoi(av[1]);
 	data.time_to_die = ft_atoi(av[2]);
 	data.time_to_eat = ft_atoi(av[3]);
 	data.time_to_sleep = ft_atoi(av[4]);
-	data.time_to_eat = (ac == 6) * ft_atoi(av[5]) + (ac != 6) * -1;
+	if (ac == 6)
+		data.meals_count = ft_atoi(av[5]);
+	else
+		data.meals_count = -1;
+	data.start_time = get_current_time();
 	data.philos = malloc(sizeof(t_philo) * data.num_of_philos);
 	if (data.philos)
 	{
@@ -29,20 +33,21 @@ t_data	init_struct(int ac, char **av)
 		while (i < data.num_of_philos)
 		{
 			data.philos[i].eat_count = 0;
-			data.philos[i].state = THINK;
+			data.philos[i].next_state = THINK;
 			data.philos[i].philo_num = i + 1;
-			data.philos[i].last_meal_time = 0;
+			data.philos[i].last_meal_time = data.start_time;
+			data.philos[i].data = &data;
 			pthread_mutex_init(&data.philos[i].mutex_fork, NULL);
 			i++;
 		}
 	}
-	data.time_elapsed = 0;
+	data.stop = 0;
 	return (data);
 }
 
 void	print_action(int time, int philo_num, enum e_state action)
 {
-	printf("%d\t%d ", time, philo_num + 1);
+	printf("%d\t%d ", time, philo_num);
 	if (action == TOOK_FORK)
 		printf("has taken a fork\n");
 	else if (action == DEATH)
@@ -53,4 +58,27 @@ void	print_action(int time, int philo_num, enum e_state action)
 		printf("is sleeping\n");
 	else if (action == THINK)
 		printf("is thinking\n");
+}
+
+void	monitoring(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (i < data->num_of_philos && !data->stop)
+	{
+		i = (i + 1) % data->num_of_philos;
+	}
+	if (data->philos[i].next_state == DEATH)
+		print_action(data->start_time, i, DEATH);
+	else
+		printf("the number of allowed meals was reached\n");
+}
+
+long long get_current_time(void)
+{
+    struct timeval tv;
+    
+    gettimeofday(&tv, NULL);
+    return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
