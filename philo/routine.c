@@ -17,6 +17,7 @@ void philo_eat(t_philo *philo)
     pthread_mutex_lock(&philo->mutex_fork);
     
     long long current_time = get_current_time();
+	
     philo->last_meal_time = current_time;
     print_action(current_time - philo->data->start_time, philo->philo_num, TOOK_FORK);
     print_action(current_time - philo->data->start_time, philo->philo_num, EAT);
