@@ -29,7 +29,7 @@ enum e_state
 	TOOK_FORK
 };
 
-typedef struct s_data t_data;
+typedef struct s_data	t_data;
 typedef struct s_philo
 {
 	int				eat_count;
@@ -50,16 +50,16 @@ typedef struct s_data
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				stop;
-	pthread_mutex_t print_mutex;
+	pthread_mutex_t	print_mutex;
 	t_philo			*philos;
 }	t_data;
 
-int		ft_atoi(char *s);
-int		are_valid_args(int ac, char **av);
-t_data	init_struct(int ac, char **av);
-void	print_action(int time, int philo_num, enum e_state action);
-void	run_simulation(t_data *data);
-long long get_current_time(void);
-long long get_time_elapsed(long long time);
+int			ft_atoi(char *s);
+int			are_valid_args(int ac, char **av);
+t_data		init_struct(int ac, char **av);
+void		print_action(int time, int philo_num, enum e_state action);
+void		run_simulation(t_data *data);
+long long	get_current_time(void);
+long long	get_time_elapsed(long long time);
 
 #endif

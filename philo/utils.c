@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 18:03:47 by ihalim            #+#    #+#             */
-/*   Updated: 2025/01/07 16:53:21 by marvin           ###   ########.fr       */
+/*   Updated: 2025/01/07 17:04:04 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 t_data	init_struct(int ac, char **av)
 {
 	static t_data	data;
-	int		i;
+	int				i;
 
 	data.num_of_philos = ft_atoi(av[1]);
 	data.time_to_die = ft_atoi(av[2]);
@@ -76,15 +76,15 @@ void	monitoring(t_data *data)
 		printf("the number of allowed meals was reached\n");
 }
 
-long long get_current_time(void)
+long long	get_current_time(void)
 {
-    struct timeval tv;
-    
-    gettimeofday(&tv, NULL);
-    return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+	struct timeval	tv;
+
+	gettimeofday(&tv, NULL);
+	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
 
-long long get_time_elapsed(long long time)
+long long	get_time_elapsed(long long time)
 {
 	return (get_current_time() - time);
 }
