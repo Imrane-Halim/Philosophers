@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 18:03:47 by ihalim            #+#    #+#             */
-/*   Updated: 2025/01/07 09:23:48 by marvin           ###   ########.fr       */
+/*   Updated: 2025/01/07 16:53:21 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,12 @@ t_data	init_struct(int ac, char **av)
 			data.philos[i].philo_num = i + 1;
 			data.philos[i].last_meal_time = data.start_time;
 			data.philos[i].data = &data;
-			pthread_mutex_init(&data.philos[i].mutex_fork, NULL);
+			pthread_mutex_init(&data.philos[i].fork_mutex, NULL);
 			i++;
 		}
 	}
 	data.stop = 0;
+	pthread_mutex_init(&data.print_mutex, NULL);
 	return (data);
 }
 
