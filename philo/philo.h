@@ -59,6 +59,6 @@ t_data	init_struct(int ac, char **av);
 void	print_action(int time, int philo_num, enum e_state action);
 void	run_simulation(t_data *data);
 long long get_current_time(void);
-
+long long get_time_elapsed(long long time);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 17:53:00 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/07 09:33:37 by marvin           ###   ########.fr       */
+/*   Updated: 2025/01/07 13:50:24 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,23 @@
 
 void philo_eat(t_philo *philo)
 {
+	long long current_time;
+
+	if (philo->eat_count >= philo->data->meals_count
+		&& philo->data->meals_count != -1)
+	{
+		philo->data->stop = 1;
+		return ;
+	}
     pthread_mutex_lock(&philo->mutex_fork);
     
-    long long current_time = get_current_time();
+    current_time = get_current_time();
 	
     philo->last_meal_time = current_time;
     print_action(current_time - philo->data->start_time, philo->philo_num, TOOK_FORK);
     print_action(current_time - philo->data->start_time, philo->philo_num, EAT);
     philo->next_state = SLEEP;
+	philo->eat_count++;
     usleep(philo->data->time_to_eat * 1000);
     pthread_mutex_unlock(&philo->mutex_fork);
 }
@@ -43,7 +52,18 @@ void	philo_think(t_philo *philo)
 	time = get_current_time();
 	print_action(time - philo->data->start_time, philo->philo_num, THINK);
 	philo->next_state = EAT;
-	usleep(philo->data->time_to_sleep * 1000);
+	usleep(5 * 1000);
+}
+
+int		check_death(t_philo *philo)
+{
+	if (get_time_elapsed(philo->last_meal_time) >= philo->data->time_to_die)
+	{
+		philo->data->stop = 1;
+		philo->next_state = DEATH;
+		return (1);
+	}
+	return (0);
 }
 
 void	*routine(void *arg)
@@ -51,8 +71,10 @@ void	*routine(void *arg)
 	t_philo *philo;
 
 	philo = (t_philo *)arg;
-	while (philo->next_state != DEATH || philo->data->stop != 1)
+	while (philo->data->stop != 1)
 	{
+		if (check_death(philo))
+			break ;
 		if (philo->next_state == EAT)
 			philo_eat(philo);
 		else if (philo->next_state == SLEEP)
@@ -60,6 +82,8 @@ void	*routine(void *arg)
 		else if (philo->next_state == THINK)
 			philo_think(philo);
 	}
+	if (philo->next_state == DEATH)
+		print_action(get_time_elapsed(philo->data->start_time), philo->philo_num, DEATH);
 	return (NULL);
 }
 
