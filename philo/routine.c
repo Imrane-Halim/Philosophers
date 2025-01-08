@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 17:53:00 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/08 17:22:16 by marvin           ###   ########.fr       */
+/*   Updated: 2025/01/08 18:44:01 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,20 @@
 void	philo_eat(t_philo *philo)
 {
 	long long	current_time;
+	int			next_philo_idx;
 
+	next_philo_idx = (philo->philo_num + 1) % philo->data->num_of_philos - 1;
 	if (philo->eat_count >= philo->data->meals_count
 		&& philo->data->meals_count != -1)
 	{
 		philo->data->stop = 1;
 		return ;
 	}
-	pthread_mutex_lock(&philo->fork_mutex);
 	if (philo->data->num_of_philos <= 1)
-	{
-		pthread_mutex_unlock(&philo->fork_mutex);
 		return ;
-	}
+	pthread_mutex_lock(&philo->fork_mutex);
+	philo->data->philos[next_philo_idx].n_forks--;
+	philo->n_forks++;
 	current_time = get_current_time();
 	philo->last_meal_time = current_time;
 	pthread_mutex_lock(&philo->data->print_mutex);
@@ -37,6 +38,8 @@ void	philo_eat(t_philo *philo)
 	pthread_mutex_unlock(&philo->data->print_mutex);
 	philo->next_state = SLEEP;
 	philo->eat_count++;
+	philo->data->philos[next_philo_idx].n_forks++;
+	philo->n_forks--;
 	usleep(philo->data->time_to_eat * 1000);
 	pthread_mutex_unlock(&philo->fork_mutex);
 }
@@ -62,7 +65,6 @@ void	philo_think(t_philo *philo)
 	print_action(time - philo->data->start_time, philo->philo_num, THINK);
 	pthread_mutex_unlock(&philo->data->print_mutex);
 	philo->next_state = EAT;
-	usleep(5 * 1000);
 }
 
 void	*routine(void *arg)
