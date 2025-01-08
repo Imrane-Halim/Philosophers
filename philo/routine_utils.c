@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 17:35:51 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/08 17:37:28 by marvin           ###   ########.fr       */
+/*   Updated: 2025/01/08 17:46:47 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	monitoring(t_data *data)
 		print_action(get_time_elapsed(data->start_time),
 			data->philos[i].philo_num, DEATH);
 	else
-		printf("the number of allowed meals was reached\n");
+		printf("number of times each philosopher must eat was reached\n");
 }
 
 long long	get_current_time(void)
