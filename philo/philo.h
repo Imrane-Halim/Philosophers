@@ -34,6 +34,7 @@ typedef struct s_philo
 {
 	int				eat_count;
 	pthread_mutex_t	fork_mutex;
+	int				n_forks;
 	long long		last_meal_time;
 	enum e_state	next_state;
 	int				philo_num;
@@ -56,10 +57,11 @@ typedef struct s_data
 
 int			ft_atoi(char *s);
 int			are_valid_args(int ac, char **av);
-t_data		init_struct(int ac, char **av);
+t_data		*init_struct(int ac, char **av);
 void		print_action(int time, int philo_num, enum e_state action);
 void		run_simulation(t_data *data);
 long long	get_current_time(void);
 long long	get_time_elapsed(long long time);
+void		monitoring(t_data *data);
 
 #endif
