@@ -15,7 +15,7 @@
 void	philo_eat(t_philo *philo)
 {
 	long long	current_time;
-	
+
 	if (philo->eat_count >= philo->data->meals_count
 		&& philo->data->meals_count != -1)
 	{
@@ -26,7 +26,7 @@ void	philo_eat(t_philo *philo)
 	if (philo->data->num_of_philos <= 1)
 	{
 		pthread_mutex_unlock(&philo->fork_mutex);
-		return ;	
+		return ;
 	}
 	current_time = get_current_time();
 	philo->last_meal_time = current_time;
