@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 18:03:47 by ihalim            #+#    #+#             */
-/*   Updated: 2025/01/08 17:42:00 by marvin           ###   ########.fr       */
+/*   Updated: 2025/01/09 16:08:29 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	init_philos(t_data *data)
 		data->philos[i].last_meal_time = data->start_time;
 		data->philos[i].data = data;
 		data->philos[i].n_forks = 1;
-		pthread_mutex_init(&data->philos[i].fork_mutex, NULL);
+		pthread_mutex_init(&data->forks[i], NULL);
 		i++;
 	}
 }
@@ -48,9 +48,12 @@ t_data	*init_struct(int ac, char **av)
 	data->start_time = get_current_time();
 	data->philos = malloc(sizeof(t_philo) * data->num_of_philos);
 	if (!data->philos)
-		return (NULL);
-	init_philos(data);
+		return (free(data), NULL);
+	data->forks = malloc(sizeof(pthread_mutex_t) * data->num_of_philos);
+	if (!data->forks)
+		return (free(data->philos), free(data), NULL);
 	data->stop = 0;
+	init_philos(data);
 	pthread_mutex_init(&data->print_mutex, NULL);
 	return (data);
 }

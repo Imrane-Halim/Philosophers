@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 17:35:51 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/09 11:11:29 by marvin           ###   ########.fr       */
+/*   Updated: 2025/01/09 16:55:56 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,36 +27,33 @@ void	print_action(int time, int philo_num, enum e_state action)
 		printf("is thinking\n");
 }
 
-int	check_death(t_philo *philo)
+int check_death(t_philo *philo)
 {
-	if (get_time_elapsed(philo->last_meal_time) > philo->data->time_to_die)
-	{
-		philo->data->stop = 1;
-		philo->next_state = DEATH;
-		return (1);
-	}
-	return (0);
+    if (get_time_elapsed(philo->last_meal_time) > philo->data->time_to_die)
+    {
+        philo->next_state = DEATH;
+        philo->data->stop = 1;
+        return (1);
+    }
+    return (0);
 }
 
-void	monitoring(t_data *data)
+void monitoring(t_data *data)
 {
-	int	i;
+    int i;
 
 	i = 0;
-	while (!data->stop)
-	{
-		if (check_death(&data->philos[i]))
-		{
-			data->stop = 1;
+    while (!data->stop)
+    {
+        if (check_death(&data->philos[i]))
+        {
+            print_action(get_time_elapsed(data->start_time),
+                data->philos[i].philo_num, DEATH);
 			break ;
-		}
-		i = (i + 1) % data->num_of_philos;
-	}
-	if (data->philos[i].next_state == DEATH)
-		print_action(get_time_elapsed(data->start_time),
-			data->philos[i].philo_num, DEATH);
-	else
-		printf("number of times each philosopher must eat was reached\n");
+        }
+        i = (i + 1) % data->num_of_philos;
+    }
+    usleep(100);
 }
 
 long long	get_current_time(void)

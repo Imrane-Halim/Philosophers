@@ -33,7 +33,6 @@ typedef struct s_data	t_data;
 typedef struct s_philo
 {
 	int				eat_count;
-	pthread_mutex_t	fork_mutex;
 	int				n_forks;
 	long long		last_meal_time;
 	enum e_state	next_state;
@@ -53,6 +52,7 @@ typedef struct s_data
 	int				stop;
 	pthread_mutex_t	print_mutex;
 	t_philo			*philos;
+	pthread_mutex_t	*forks;
 }	t_data;
 
 int			ft_atoi(char *s);
