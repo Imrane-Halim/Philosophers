@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 17:35:51 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/09 16:55:56 by marvin           ###   ########.fr       */
+/*   Updated: 2025/01/09 19:54:21 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,9 @@ void	print_action(int time, int philo_num, enum e_state action)
 		printf("is thinking\n");
 }
 
-int	check_death(t_philo *philo)
+inline int	check_death(t_philo *philo)
 {
-	if (get_time_elapsed(philo->last_meal_time) > philo->data->time_to_die)
-	{
-		philo->next_state = DEATH;
-		philo->data->stop = 1;
-		return (1);
-	}
-	return (0);
+	return (get_time_elapsed(philo->last_meal_time) > philo->data->time_to_die);
 }
 
 void	monitoring(t_data *data)
@@ -47,6 +41,8 @@ void	monitoring(t_data *data)
 	{
 		if (check_death(&data->philos[i]))
 		{
+			data->stop = 1;
+			data->philos[i].next_state = DEATH;
 			print_action(get_time_elapsed(data->start_time),
 				data->philos[i].philo_num, DEATH);
 			break ;

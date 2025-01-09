@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 17:53:00 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/09 18:55:57 by marvin           ###   ########.fr       */
+/*   Updated: 2025/01/09 20:04:57 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,12 @@ void	philo_eat(t_philo *philo)
 	second_fork = philo->philo_num % philo->data->num_of_philos;
 	pthread_mutex_lock(&philo->data->forks[first_fork]);
 	pthread_mutex_lock(&philo->data->forks[second_fork]);
+	if (philo->data->stop)
+	{
+		pthread_mutex_unlock(&philo->data->forks[second_fork]);
+		pthread_mutex_unlock(&philo->data->forks[first_fork]);
+		return ;
+	}
 	pthread_mutex_lock(&philo->data->print_mutex);
 	print_action(get_time_elapsed(philo->data->start_time), philo->philo_num,
 		TOOK_FORK);
@@ -44,8 +50,8 @@ void	philo_eat(t_philo *philo)
 void	philo_sleep(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->data->print_mutex);
-	print_action(get_time_elapsed(philo->data->start_time),
-		philo->philo_num, SLEEP);
+	print_action(get_time_elapsed(philo->data->start_time), philo->philo_num,
+		SLEEP);
 	pthread_mutex_unlock(&philo->data->print_mutex);
 	ft_mssleep(philo->data->time_to_sleep);
 	philo->next_state = THINK;
@@ -54,8 +60,8 @@ void	philo_sleep(t_philo *philo)
 void	philo_think(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->data->print_mutex);
-	print_action(get_time_elapsed(philo->data->start_time),
-		philo->philo_num, THINK);
+	print_action(get_time_elapsed(philo->data->start_time), philo->philo_num,
+		THINK);
 	pthread_mutex_unlock(&philo->data->print_mutex);
 	philo->next_state = EAT;
 }
