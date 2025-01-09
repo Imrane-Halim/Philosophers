@@ -6,23 +6,19 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 17:53:00 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/09 17:17:10 by marvin           ###   ########.fr       */
+/*   Updated: 2025/01/09 18:28:39 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	ft_mssleep(t_philo *philo, long long sleep_time)
+void	ft_mssleep(long long sleep_time)
 {
 	long long	wake_up;
-	(void)philo;
+	
 	wake_up = get_current_time() + sleep_time;
 	while (get_current_time() < wake_up)
-	{
-		if (check_death(philo))
-			break ;
 		usleep(100);
-	}
 }
 
 void philo_eat(t_philo *philo)
@@ -51,7 +47,7 @@ void philo_eat(t_philo *philo)
     philo->last_meal_time = get_current_time();
     philo->eat_count++;
     pthread_mutex_unlock(&philo->data->print_mutex);
-    ft_mssleep(philo, philo->data->time_to_eat);
+    ft_mssleep(philo->data->time_to_eat);
     pthread_mutex_unlock(&philo->data->forks[second_fork]);
     pthread_mutex_unlock(&philo->data->forks[first_fork]);
     philo->next_state = SLEEP;
@@ -66,7 +62,7 @@ void	philo_sleep(t_philo *philo)
 	if (!philo->data->stop)
 		print_action(time - philo->data->start_time, philo->philo_num, SLEEP);
 	pthread_mutex_unlock(&philo->data->print_mutex);
-	ft_mssleep(philo, philo->data->time_to_sleep);
+	ft_mssleep(philo->data->time_to_sleep);
 	philo->next_state = THINK;
 }
 
