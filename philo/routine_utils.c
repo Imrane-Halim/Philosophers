@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 17:35:51 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/08 18:41:04 by marvin           ###   ########.fr       */
+/*   Updated: 2025/01/09 11:11:29 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	monitoring(t_data *data)
 	int	i;
 
 	i = 0;
-	while (i < data->num_of_philos && !data->stop)
+	while (!data->stop)
 	{
 		if (check_death(&data->philos[i]))
 		{
