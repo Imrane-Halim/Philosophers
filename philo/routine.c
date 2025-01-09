@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 17:53:00 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/08 18:44:01 by marvin           ###   ########.fr       */
+/*   Updated: 2025/01/09 10:23:57 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ void	philo_sleep(t_philo *philo)
 {
 	long long	time;
 
-	time = get_current_time();
 	pthread_mutex_lock(&philo->data->print_mutex);
+	time = get_current_time();
 	print_action(time - philo->data->start_time, philo->philo_num, SLEEP);
 	pthread_mutex_unlock(&philo->data->print_mutex);
 	philo->next_state = THINK;
@@ -60,8 +60,8 @@ void	philo_think(t_philo *philo)
 {
 	long long	time;
 
-	time = get_current_time();
 	pthread_mutex_lock(&philo->data->print_mutex);
+	time = get_current_time();
 	print_action(time - philo->data->start_time, philo->philo_num, THINK);
 	pthread_mutex_unlock(&philo->data->print_mutex);
 	philo->next_state = EAT;
