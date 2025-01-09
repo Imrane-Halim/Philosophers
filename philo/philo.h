@@ -63,7 +63,6 @@ void		run_simulation(t_data *data);
 long long	get_current_time(void);
 long long	get_time_elapsed(long long time);
 void		monitoring(t_data *data);
-int	check_death(t_philo *philo);
-
+int			check_death(t_philo *philo);
 
 #endif

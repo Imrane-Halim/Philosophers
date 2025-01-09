@@ -27,33 +27,33 @@ void	print_action(int time, int philo_num, enum e_state action)
 		printf("is thinking\n");
 }
 
-int check_death(t_philo *philo)
+int	check_death(t_philo *philo)
 {
-    if (get_time_elapsed(philo->last_meal_time) > philo->data->time_to_die)
-    {
-        philo->next_state = DEATH;
-        philo->data->stop = 1;
-        return (1);
-    }
-    return (0);
+	if (get_time_elapsed(philo->last_meal_time) > philo->data->time_to_die)
+	{
+		philo->next_state = DEATH;
+		philo->data->stop = 1;
+		return (1);
+	}
+	return (0);
 }
 
-void monitoring(t_data *data)
+void	monitoring(t_data *data)
 {
-    int i;
+	int	i;
 
 	i = 0;
-    while (!data->stop)
-    {
-        if (check_death(&data->philos[i]))
-        {
-            print_action(get_time_elapsed(data->start_time),
-                data->philos[i].philo_num, DEATH);
+	while (!data->stop)
+	{
+		if (check_death(&data->philos[i]))
+		{
+			print_action(get_time_elapsed(data->start_time),
+				data->philos[i].philo_num, DEATH);
 			break ;
-        }
-        i = (i + 1) % data->num_of_philos;
-    }
-    usleep(100);
+		}
+		i = (i + 1) % data->num_of_philos;
+	}
+	usleep(100);
 }
 
 long long	get_current_time(void)

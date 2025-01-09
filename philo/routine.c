@@ -6,51 +6,39 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 17:53:00 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/09 18:28:39 by marvin           ###   ########.fr       */
+/*   Updated: 2025/01/09 18:46:55 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	ft_mssleep(long long sleep_time)
+void	philo_eat(t_philo *philo)
 {
-	long long	wake_up;
-	
-	wake_up = get_current_time() + sleep_time;
-	while (get_current_time() < wake_up)
-		usleep(100);
-}
+	int	first_fork;
+	int	second_fork;
 
-void philo_eat(t_philo *philo)
-{
-    int first_fork;
-    int second_fork;
-    
-	if (philo->eat_count >= philo->data->meals_count && philo->data->meals_count != -1)
+	if (philo->eat_count >= philo->data->meals_count
+		&& philo->data->meals_count != -1)
 	{
 		philo->data->stop = 1;
 		return ;
 	}
-    if (philo->data->num_of_philos <= 1)
-        return;
-    first_fork = philo->philo_num - 1;
-    second_fork = philo->philo_num % philo->data->num_of_philos;
-    
-    pthread_mutex_lock(&philo->data->forks[first_fork]);
-    pthread_mutex_lock(&philo->data->print_mutex);
-    print_action(get_current_time() - philo->data->start_time, philo->philo_num, TOOK_FORK);
-    pthread_mutex_unlock(&philo->data->print_mutex);
-    pthread_mutex_lock(&philo->data->forks[second_fork]);
-    pthread_mutex_lock(&philo->data->print_mutex);
-    print_action(get_current_time() - philo->data->start_time, philo->philo_num, TOOK_FORK);
-    print_action(get_current_time() - philo->data->start_time, philo->philo_num, EAT);
-    philo->last_meal_time = get_current_time();
-    philo->eat_count++;
-    pthread_mutex_unlock(&philo->data->print_mutex);
-    ft_mssleep(philo->data->time_to_eat);
-    pthread_mutex_unlock(&philo->data->forks[second_fork]);
-    pthread_mutex_unlock(&philo->data->forks[first_fork]);
-    philo->next_state = SLEEP;
+	first_fork = philo->philo_num - 1;
+	second_fork = philo->philo_num % philo->data->num_of_philos;
+	pthread_mutex_lock(&philo->data->forks[first_fork]);
+	pthread_mutex_lock(&philo->data->forks[second_fork]);
+	pthread_mutex_lock(&philo->data->print_mutex);
+	print_action(get_current_time() - philo->data->start_time, philo->philo_num,
+		TOOK_FORK);
+	print_action(get_current_time() - philo->data->start_time, philo->philo_num,
+		EAT);
+	philo->last_meal_time = get_current_time();
+	philo->eat_count++;
+	pthread_mutex_unlock(&philo->data->print_mutex);
+	ft_mssleep(philo->data->time_to_eat);
+	pthread_mutex_unlock(&philo->data->forks[second_fork]);
+	pthread_mutex_unlock(&philo->data->forks[first_fork]);
+	philo->next_state = SLEEP;
 }
 
 void	philo_sleep(t_philo *philo)
@@ -69,7 +57,7 @@ void	philo_sleep(t_philo *philo)
 void	philo_think(t_philo *philo)
 {
 	long long	time;
-	
+
 	pthread_mutex_lock(&philo->data->print_mutex);
 	time = get_current_time();
 	if (!philo->data->stop)
@@ -85,7 +73,7 @@ void	*routine(void *arg)
 	philo = (t_philo *)arg;
 	while (philo->next_state != DEATH && !philo->data->stop)
 	{
-		if (philo->next_state == EAT)
+		if (philo->next_state == EAT && philo->data->num_of_philos > 1)
 			philo_eat(philo);
 		else if (philo->next_state == SLEEP)
 			philo_sleep(philo);

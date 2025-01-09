@@ -6,11 +6,20 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 18:03:47 by ihalim            #+#    #+#             */
-/*   Updated: 2025/01/09 16:08:29 by marvin           ###   ########.fr       */
+/*   Updated: 2025/01/09 18:47:02 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	ft_mssleep(long long sleep_time)
+{
+	long long	wake_up;
+
+	wake_up = get_current_time() + sleep_time;
+	while (get_current_time() < wake_up)
+		usleep(100);
+}
 
 static void	init_philos(t_data *data)
 {
