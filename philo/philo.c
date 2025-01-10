@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 10:27:39 by ihalim            #+#    #+#             */
-/*   Updated: 2025/01/08 17:19:16 by marvin           ###   ########.fr       */
+/*   Updated: 2025/01/10 10:57:02 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,17 +26,12 @@ int	main(int ac, char **av)
 	}
 	if (!are_valid_args(ac, av))
 		return (EXIT_FAILURE);
-	if (ft_atoi(av[1]) == 0)
-	{
-		write(STDERR_FILENO,
-			"You need at least 1 philosopher in the table!\n", 47);
-		return (EXIT_FAILURE);
-	}
 	data = init_struct(ac, av);
-	if (!data->philos)
+	if (!data)
 		return (write(STDERR_FILENO, "malloc error\n", 14), EXIT_FAILURE);
 	if (data->num_of_philos < 1)
-		return (EXIT_SUCCESS);
+		return (clean_all(data), EXIT_SUCCESS);
 	run_simulation(data);
+	clean_all(data);
 	return (0);
 }

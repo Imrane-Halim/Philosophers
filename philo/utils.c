@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 18:03:47 by ihalim            #+#    #+#             */
-/*   Updated: 2025/01/09 18:47:02 by marvin           ###   ########.fr       */
+/*   Updated: 2025/01/10 10:56:46 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,4 +65,17 @@ t_data	*init_struct(int ac, char **av)
 	init_philos(data);
 	pthread_mutex_init(&data->print_mutex, NULL);
 	return (data);
+}
+
+void	clean_all(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (i < data->num_of_philos)
+		pthread_mutex_destroy(&data->forks[i++]);
+	pthread_mutex_destroy(&data->print_mutex);
+	free(data->forks);
+	free(data->philos);
+	free(data);
 }

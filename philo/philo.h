@@ -65,5 +65,6 @@ long long	get_time_elapsed(long long time);
 void		monitoring(t_data *data);
 int			check_death(t_philo *philo);
 void		ft_mssleep(long long sleep_time);
+void		clean_all(t_data *data);
 
 #endif
