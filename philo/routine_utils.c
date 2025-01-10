@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 17:35:51 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/10 11:11:08 by marvin           ###   ########.fr       */
+/*   Updated: 2025/01/10 11:14:39 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	print_action(int time, int philo_num, enum e_state action)
 		printf("is thinking\n");
 }
 
-inline int	check_death(t_philo *philo)
+int	check_death(t_philo *philo)
 {
 	return (get_time_elapsed(philo->last_meal_time) > philo->data->time_to_die);
 }
