@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 17:35:51 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/09 19:54:21 by marvin           ###   ########.fr       */
+/*   Updated: 2025/01/10 11:11:08 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ void	monitoring(t_data *data)
 			break ;
 		}
 		i = (i + 1) % data->num_of_philos;
+		usleep(100);
 	}
-	usleep(100);
 }
 
 long long	get_current_time(void)
