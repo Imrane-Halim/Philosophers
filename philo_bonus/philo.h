@@ -19,11 +19,6 @@
 # include <unistd.h>
 # include <limits.h>
 # include <sys/time.h>
-# include <semaphore.h>
-# include <sys/wait.h>
-# include <semaphore.h>
-# include <signal.h>
-# include <fcntl.h>
 
 enum e_state
 {
@@ -43,7 +38,7 @@ typedef struct s_philo
 	enum e_state	next_state;
 	int				philo_num;
 	t_data			*data;
-	pid_t			pid;
+	pthread_t		th_id;
 }	t_philo;
 
 typedef struct s_data
@@ -54,9 +49,10 @@ typedef struct s_data
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
-	sem_t			*print_sem;
+	int				stop;
+	pthread_mutex_t	print_mutex;
 	t_philo			*philos;
-	sem_t			**forks;
+	pthread_mutex_t	*forks;
 }	t_data;
 
 int			ft_atoi(char *s);

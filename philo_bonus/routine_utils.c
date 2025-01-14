@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 17:35:51 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/12 11:21:22 by marvin           ###   ########.fr       */
+/*   Updated: 2025/01/10 11:14:39 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,11 @@ void	monitoring(t_data *data)
 	int	i;
 
 	i = 0;
-	while (1)
+	while (!data->stop)
 	{
 		if (check_death(&data->philos[i]))
 		{
+			data->stop = 1;
 			data->philos[i].next_state = DEATH;
 			print_action(get_time_elapsed(data->start_time),
 				data->philos[i].philo_num, DEATH);
