@@ -19,6 +19,10 @@
 # include <unistd.h>
 # include <limits.h>
 # include <sys/time.h>
+# include <semaphore.h>
+# include <fcntl.h>
+# include <sys/wait.h>
+# include <signal.h>
 
 enum e_state
 {
@@ -29,16 +33,13 @@ enum e_state
 	TOOK_FORK
 };
 
-typedef struct s_data	t_data;
 typedef struct s_philo
 {
 	int				eat_count;
-	int				n_forks;
 	long long		last_meal_time;
 	enum e_state	next_state;
 	int				philo_num;
-	t_data			*data;
-	pthread_t		th_id;
+	pid_t			pid;
 }	t_philo;
 
 typedef struct s_data
@@ -49,10 +50,9 @@ typedef struct s_data
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
-	int				stop;
-	pthread_mutex_t	print_mutex;
 	t_philo			*philos;
-	pthread_mutex_t	*forks;
+	sem_t			*forks_sem;
+	sem_t			*print_sem;
 }	t_data;
 
 int			ft_atoi(char *s);
@@ -63,7 +63,7 @@ void		run_simulation(t_data *data);
 long long	get_current_time(void);
 long long	get_time_elapsed(long long time);
 void		monitoring(t_data *data);
-int			check_death(t_philo *philo);
+int			check_death(t_data *data, t_philo *philo);
 void		ft_mssleep(long long sleep_time);
 void		clean_all(t_data *data);
 

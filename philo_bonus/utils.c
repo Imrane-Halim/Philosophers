@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ihalim <ihalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 18:03:47 by ihalim            #+#    #+#             */
-/*   Updated: 2025/01/10 10:56:46 by marvin           ###   ########.fr       */
+/*   Updated: 2025/01/14 16:28:07 by ihalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,6 @@ static void	init_philos(t_data *data)
 		data->philos[i].next_state = THINK;
 		data->philos[i].philo_num = i + 1;
 		data->philos[i].last_meal_time = data->start_time;
-		data->philos[i].data = data;
-		data->philos[i].n_forks = 1;
-		pthread_mutex_init(&data->forks[i], NULL);
 		i++;
 	}
 }
@@ -58,24 +55,18 @@ t_data	*init_struct(int ac, char **av)
 	data->philos = malloc(sizeof(t_philo) * data->num_of_philos);
 	if (!data->philos)
 		return (free(data), NULL);
-	data->forks = malloc(sizeof(pthread_mutex_t) * data->num_of_philos);
-	if (!data->forks)
-		return (free(data->philos), free(data), NULL);
-	data->stop = 0;
+	data->forks_sem = sem_open("forks_sem", O_CREAT, 0644, 1);
+	data->print_sem = sem_open("print_sem", O_CREAT, 0644, 1);
 	init_philos(data);
-	pthread_mutex_init(&data->print_mutex, NULL);
 	return (data);
 }
 
 void	clean_all(t_data *data)
 {
-	int	i;
-
-	i = 0;
-	while (i < data->num_of_philos)
-		pthread_mutex_destroy(&data->forks[i++]);
-	pthread_mutex_destroy(&data->print_mutex);
-	free(data->forks);
+	sem_close(data->forks_sem);
+	sem_close(data->print_sem);
+	sem_unlink("forks_sem");
+	sem_unlink("print_sem");
 	free(data->philos);
 	free(data);
 }

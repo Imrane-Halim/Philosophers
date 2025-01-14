@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ihalim <ihalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 17:35:51 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/10 11:14:39 by marvin           ###   ########.fr       */
+/*   Updated: 2025/01/14 16:28:36 by ihalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,30 +27,30 @@ void	print_action(int time, int philo_num, enum e_state action)
 		printf("is thinking\n");
 }
 
-int	check_death(t_philo *philo)
+int	check_death(t_data *data, t_philo *philo)
 {
-	return (get_time_elapsed(philo->last_meal_time) > philo->data->time_to_die);
+	return (get_time_elapsed(philo->last_meal_time) > data->time_to_die);
 }
 
-void	monitoring(t_data *data)
-{
-	int	i;
+// void	monitoring(t_data *data)
+// {
+// 	int	i;
 
-	i = 0;
-	while (!data->stop)
-	{
-		if (check_death(&data->philos[i]))
-		{
-			data->stop = 1;
-			data->philos[i].next_state = DEATH;
-			print_action(get_time_elapsed(data->start_time),
-				data->philos[i].philo_num, DEATH);
-			break ;
-		}
-		i = (i + 1) % data->num_of_philos;
-		usleep(100);
-	}
-}
+// 	i = 0;
+// 	while (!data->stop)
+// 	{
+// 		if (check_death(&data->philos[i]))
+// 		{
+// 			data->stop = 1;
+// 			data->philos[i].next_state = DEATH;
+// 			print_action(get_time_elapsed(data->start_time),
+// 				data->philos[i].philo_num, DEATH);
+// 			break ;
+// 		}
+// 		i = (i + 1) % data->num_of_philos;
+// 		usleep(100);
+// 	}
+// }
 
 long long	get_current_time(void)
 {

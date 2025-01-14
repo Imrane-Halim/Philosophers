@@ -3,104 +3,104 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ihalim <ihalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 17:53:00 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/10 10:34:05 by marvin           ###   ########.fr       */
+/*   Updated: 2025/01/14 16:33:46 by ihalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	philo_eat(t_philo *philo)
+void	philo_eat(t_data *data, t_philo *philo)
 {
-	int	first_fork;
-	int	second_fork;
-
-	first_fork = philo->philo_num - 1;
-	second_fork = philo->philo_num % philo->data->num_of_philos;
-	pthread_mutex_lock(&philo->data->forks[first_fork]);
-	pthread_mutex_lock(&philo->data->forks[second_fork]);
-	if (philo->data->stop)
-	{
-		pthread_mutex_unlock(&philo->data->forks[second_fork]);
-		pthread_mutex_unlock(&philo->data->forks[first_fork]);
-		return ;
-	}
-	pthread_mutex_lock(&philo->data->print_mutex);
-	print_action(get_time_elapsed(philo->data->start_time), philo->philo_num,
+	sem_t *print = sem_open("print_sem", 0);
+	sem_t *forks = sem_open("forks_sem", 0);
+	
+	sem_wait(forks);
+	
+	sem_wait(print);
+	print_action(get_time_elapsed(data->start_time), philo->philo_num,
 		TOOK_FORK);
-	print_action(get_time_elapsed(philo->data->start_time), philo->philo_num,
+	print_action(get_time_elapsed(data->start_time), philo->philo_num,
 		EAT);
 	philo->last_meal_time = get_current_time();
 	philo->eat_count++;
-	pthread_mutex_unlock(&philo->data->print_mutex);
-	ft_mssleep(philo->data->time_to_eat);
-	pthread_mutex_unlock(&philo->data->forks[second_fork]);
-	pthread_mutex_unlock(&philo->data->forks[first_fork]);
+	sem_post(print);
+
+	sem_post(forks);
+	ft_mssleep(data->time_to_eat);
 	philo->next_state = SLEEP;
 }
 
-void	philo_sleep(t_philo *philo)
+void	philo_sleep(t_data *data, t_philo *philo)
 {
-	pthread_mutex_lock(&philo->data->print_mutex);
-	print_action(get_time_elapsed(philo->data->start_time), philo->philo_num,
-		SLEEP);
-	pthread_mutex_unlock(&philo->data->print_mutex);
-	ft_mssleep(philo->data->time_to_sleep);
+	sem_t *print = sem_open("print_sem", 0);
+	
+	sem_wait(print);
+	print_action(get_time_elapsed(data->start_time),
+		philo->philo_num, SLEEP);
+	sem_post(print);
+	ft_mssleep(data->time_to_sleep);
 	philo->next_state = THINK;
 }
 
-void	philo_think(t_philo *philo)
+void	philo_think(t_data *data, t_philo *philo)
 {
-	pthread_mutex_lock(&philo->data->print_mutex);
-	print_action(get_time_elapsed(philo->data->start_time), philo->philo_num,
-		THINK);
-	pthread_mutex_unlock(&philo->data->print_mutex);
+	sem_t *print = sem_open("print_sem", 0);
+	
+	sem_wait(print);
+	print_action(get_time_elapsed(data->start_time),
+		philo->philo_num, THINK);
+	sem_post(print);
 	philo->next_state = EAT;
 }
 
-void	*routine(void *arg)
+void	routine(t_data *data, t_philo *philo)
 {
-	t_philo	*philo;
-
-	philo = (t_philo *)arg;
-	while (philo->next_state != DEATH && !philo->data->stop)
+	while (!check_death(data, philo))
 	{
-		if (philo->next_state == EAT && philo->data->num_of_philos > 1)
+		if (philo->next_state == EAT && data->num_of_philos > 1)
 		{
-			if (philo->eat_count >= philo->data->meals_count
-				&& philo->data->meals_count != -1)
-			{
-				philo->data->stop = 1;
+			if (philo->eat_count >= data->meals_count
+				&& data->meals_count != -1)
 				break ;
-			}
-			philo_eat(philo);
+			philo_eat(data, philo);
 		}
 		else if (philo->next_state == SLEEP)
-			philo_sleep(philo);
+			philo_sleep(data, philo);
 		else if (philo->next_state == THINK)
-			philo_think(philo);
+			philo_think(data, philo);
 	}
-	return (NULL);
+	exit(1);
 }
 
 void	run_simulation(t_data *data)
 {
 	int	i;
+	int	status;
+	pid_t dead_pid;
 
 	i = 0;
 	while (i < data->num_of_philos)
 	{
-		pthread_create(&data->philos[i].th_id, NULL, routine, &data->philos[i]);
+		data->philos[i].pid = fork();
+		if (data->philos[i].pid == 0)
+		{
+			routine(data, &data->philos[i]);
+			exit(0);
+		}
 		usleep(100);
 		i++;
 	}
-	monitoring(data);
+	dead_pid = waitpid(-1, &status, 0);
+	if (WEXITSTATUS(status) != 1)
+		return ;
 	i = 0;
 	while (i < data->num_of_philos)
 	{
-		pthread_join(data->philos[i].th_id, NULL);
+		if (data->philos[i].pid != dead_pid)
+			kill(data->philos[i].pid, SIGKILL);
 		i++;
 	}
 }
