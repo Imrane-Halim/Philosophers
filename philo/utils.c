@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ihalim <ihalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 18:03:47 by ihalim            #+#    #+#             */
-/*   Updated: 2025/01/10 10:56:46 by marvin           ###   ########.fr       */
+/*   Updated: 2025/01/14 18:33:05 by ihalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ t_data	*init_struct(int ac, char **av)
 		return (free(data->philos), free(data), NULL);
 	data->stop = 0;
 	init_philos(data);
-	pthread_mutex_init(&data->print_mutex, NULL);
+	pthread_mutex_init(&data->mutex, NULL);
 	return (data);
 }
 
@@ -74,7 +74,7 @@ void	clean_all(t_data *data)
 	i = 0;
 	while (i < data->num_of_philos)
 		pthread_mutex_destroy(&data->forks[i++]);
-	pthread_mutex_destroy(&data->print_mutex);
+	pthread_mutex_destroy(&data->mutex);
 	free(data->forks);
 	free(data->philos);
 	free(data);

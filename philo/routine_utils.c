@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ihalim <ihalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 17:35:51 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/10 11:14:39 by marvin           ###   ########.fr       */
+/*   Updated: 2025/01/14 18:49:44 by ihalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,9 @@ void	print_action(int time, int philo_num, enum e_state action)
 
 int	check_death(t_philo *philo)
 {
-	return (get_time_elapsed(philo->last_meal_time) > philo->data->time_to_die);
+	pthread_mutex_lock(&philo->data->mutex);
+	return (pthread_mutex_unlock(&philo->data->mutex),
+		get_time_elapsed(philo->last_meal_time) > philo->data->time_to_die);
 }
 
 void	monitoring(t_data *data)
@@ -41,10 +43,12 @@ void	monitoring(t_data *data)
 	{
 		if (check_death(&data->philos[i]))
 		{
+			pthread_mutex_lock(&data->mutex);
 			data->stop = 1;
 			data->philos[i].next_state = DEATH;
 			print_action(get_time_elapsed(data->start_time),
 				data->philos[i].philo_num, DEATH);
+			pthread_mutex_unlock(&data->mutex);
 			break ;
 		}
 		i = (i + 1) % data->num_of_philos;

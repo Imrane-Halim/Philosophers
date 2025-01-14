@@ -50,7 +50,7 @@ typedef struct s_data
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				stop;
-	pthread_mutex_t	print_mutex;
+	pthread_mutex_t	mutex;
 	t_philo			*philos;
 	pthread_mutex_t	*forks;
 }	t_data;
