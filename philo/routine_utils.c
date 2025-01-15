@@ -6,7 +6,7 @@
 /*   By: ihalim <ihalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 17:35:51 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/15 10:47:31 by ihalim           ###   ########.fr       */
+/*   Updated: 2025/01/15 11:09:24 by ihalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	monitoring(t_data *data)
 		{
 			data->stop = 1;
 			print_action(get_time_elapsed(data->start_time),
-				data->philos[i].philo_num, DEATH);
+				data->philos[i].philo_num, "died");
 			pthread_mutex_unlock(&data->mutex);
 			break ;
 		}
@@ -71,17 +71,15 @@ void	*routine(void *arg)
 			break ;
 		}
 		pthread_mutex_unlock(&philo->data->mutex);
-		if (philo->data->num_of_philos > 1
-			&& philo->eat_count >= philo->data->meals_count
-			&& philo->data->meals_count != -1)
-		{
-			philo->data->stop = 1;
-			break ;
-		}
 		if (philo->data->num_of_philos > 1)
+		{
+			if (philo->eat_count >= philo->data->meals_count
+				&& philo->data->meals_count != -1)
+				return (philo->data->stop = 1, NULL);
 			philo_eat(philo);
-		philo_sleep(philo);
-		philo_think(philo);
+			philo_sleep(philo);
+			philo_think(philo);
+		}
 	}
 	return (NULL);
 }

@@ -20,15 +20,6 @@
 # include <sys/time.h>
 # include <unistd.h>
 
-enum					e_state
-{
-	EAT,
-	SLEEP,
-	THINK,
-	DEATH,
-	TOOK_FORK
-};
-
 typedef struct s_data	t_data;
 typedef struct s_philo
 {
@@ -70,7 +61,7 @@ void		monitoring(t_data *data);
 int			check_death(t_philo *philo);
 
 // Philosopher Actions
-void		print_action(int time, int philo_num, enum e_state action);
+void		print_action(int time, int philo_num, char *action);
 void		clean_all(t_data *data);
 void		philo_think(t_philo *philo);
 void		philo_eat(t_philo *philo);

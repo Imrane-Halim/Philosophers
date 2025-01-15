@@ -6,7 +6,7 @@
 /*   By: ihalim <ihalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 17:53:00 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/15 10:47:13 by ihalim           ###   ########.fr       */
+/*   Updated: 2025/01/15 10:57:32 by ihalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,9 @@ void	philo_eat(t_philo *philo)
 	if (!should_stop)
 	{
 		print_action(get_time_elapsed(philo->data->start_time),
-			philo->philo_num, TOOK_FORK);
+			philo->philo_num, "has taken a fork");
 		print_action(get_time_elapsed(philo->data->start_time),
-			philo->philo_num, EAT);
+			philo->philo_num, "is eating");
 		philo->last_meal_time = get_current_time();
 		philo->eat_count++;
 	}
@@ -70,7 +70,7 @@ void	philo_sleep(t_philo *philo)
 	pthread_mutex_lock(&philo->data->mutex);
 	if (!philo->data->stop)
 		print_action(get_time_elapsed(philo->data->start_time),
-			philo->philo_num, SLEEP);
+			philo->philo_num, "is sleeping");
 	pthread_mutex_unlock(&philo->data->mutex);
 	ft_mssleep(philo->data->time_to_sleep);
 }
@@ -80,6 +80,6 @@ void	philo_think(t_philo *philo)
 	pthread_mutex_lock(&philo->data->mutex);
 	if (!philo->data->stop)
 		print_action(get_time_elapsed(philo->data->start_time),
-			philo->philo_num, THINK);
+			philo->philo_num, "is thinking");
 	pthread_mutex_unlock(&philo->data->mutex);
 }

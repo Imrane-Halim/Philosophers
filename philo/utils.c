@@ -6,7 +6,7 @@
 /*   By: ihalim <ihalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 18:03:47 by ihalim            #+#    #+#             */
-/*   Updated: 2025/01/15 10:12:58 by ihalim           ###   ########.fr       */
+/*   Updated: 2025/01/15 10:52:22 by ihalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,17 +79,8 @@ void	clean_all(t_data *data)
 	free(data);
 }
 
-void	print_action(int time, int philo_num, enum e_state action)
+void	print_action(int time, int philo_num, char *action)
 {
 	printf("%d\t%d ", time, philo_num);
-	if (action == TOOK_FORK)
-		printf("has taken a fork\n");
-	else if (action == DEATH)
-		printf("died\n");
-	else if (action == EAT)
-		printf("is eating\n");
-	else if (action == SLEEP)
-		printf("is sleeping\n");
-	else if (action == THINK)
-		printf("is thinking\n");
+	printf("%s\n", action);
 }
