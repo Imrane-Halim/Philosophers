@@ -6,31 +6,38 @@
 /*   By: ihalim <ihalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 17:53:00 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/14 16:33:46 by ihalim           ###   ########.fr       */
+/*   Updated: 2025/01/15 17:46:44 by ihalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	philo_eat(t_data *data, t_philo *philo)
+void    philo_eat(t_data *data, t_philo *philo)
 {
-	sem_t *print = sem_open("print_sem", 0);
-	sem_t *forks = sem_open("forks_sem", 0);
-	
-	sem_wait(forks);
-	
-	sem_wait(print);
-	print_action(get_time_elapsed(data->start_time), philo->philo_num,
-		TOOK_FORK);
-	print_action(get_time_elapsed(data->start_time), philo->philo_num,
-		EAT);
-	philo->last_meal_time = get_current_time();
-	philo->eat_count++;
-	sem_post(print);
+    sem_t *print = sem_open("print_sem", 0);
+    sem_t *forks = sem_open("forks_sem", 0);
+    sem_t *waiter = sem_open("waiter_sem", 0);
+    
+    sem_wait(waiter);
+    
+    sem_wait(forks);
+    sem_wait(forks);
+    
+    sem_wait(print);
+    print_action(get_time_elapsed(data->start_time), philo->philo_num, TOOK_FORK);
+    print_action(get_time_elapsed(data->start_time), philo->philo_num, EAT);
+    philo->last_meal_time = get_current_time();
+    philo->eat_count++;
+    sem_post(print);
 
-	sem_post(forks);
-	ft_mssleep(data->time_to_eat);
-	philo->next_state = SLEEP;
+    ft_mssleep(data->time_to_eat);
+    
+    sem_post(forks);
+    sem_post(forks);
+    
+    sem_post(waiter);
+    
+    philo->next_state = SLEEP;
 }
 
 void	philo_sleep(t_data *data, t_philo *philo)
@@ -58,8 +65,15 @@ void	philo_think(t_data *data, t_philo *philo)
 
 void	routine(t_data *data, t_philo *philo)
 {
-	while (!check_death(data, philo))
+	while (1)
 	{
+		sem_wait(data->waiter_sem);
+		if (check_death(data, philo))
+		{
+			print_action(get_time_elapsed(data->start_time), philo->philo_num, DEATH);
+			exit(1);
+		}
+		sem_post(data->waiter_sem);
 		if (philo->next_state == EAT && data->num_of_philos > 1)
 		{
 			if (philo->eat_count >= data->meals_count

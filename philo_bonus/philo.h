@@ -44,16 +44,17 @@ typedef struct s_philo
 
 typedef struct s_data
 {
-	long long		start_time;
-	int				num_of_philos;
-	int				meals_count;
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_to_sleep;
-	t_philo			*philos;
-	sem_t			*forks_sem;
-	sem_t			*print_sem;
-}	t_data;
+    long long       start_time;
+    int             num_of_philos;
+    int             meals_count;
+    int             time_to_die;
+    int             time_to_eat;
+    int             time_to_sleep;
+    t_philo         *philos;
+    sem_t           *forks_sem;
+    sem_t           *print_sem;
+    sem_t           *waiter_sem;
+}   t_data;
 
 int			ft_atoi(char *s);
 int			are_valid_args(int ac, char **av);

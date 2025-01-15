@@ -1,5 +1,5 @@
 NAME 	= philo
-CFLAGS 	= -Wall -Wextra -Werror
+CFLAGS 	= -Wall -Wextra -Werror -g3
 
 SRC 	= philo.c check_args.c utils.c routine.c routine_utils.c
 OBJ 	= $(SRC:.c=.o)
