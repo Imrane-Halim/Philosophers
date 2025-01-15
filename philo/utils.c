@@ -6,7 +6,7 @@
 /*   By: ihalim <ihalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 18:03:47 by ihalim            #+#    #+#             */
-/*   Updated: 2025/01/14 18:33:05 by ihalim           ###   ########.fr       */
+/*   Updated: 2025/01/15 10:12:58 by ihalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ static void	init_philos(t_data *data)
 	while (i < data->num_of_philos)
 	{
 		data->philos[i].eat_count = 0;
-		data->philos[i].next_state = THINK;
 		data->philos[i].philo_num = i + 1;
 		data->philos[i].last_meal_time = data->start_time;
 		data->philos[i].data = data;
@@ -78,4 +77,19 @@ void	clean_all(t_data *data)
 	free(data->forks);
 	free(data->philos);
 	free(data);
+}
+
+void	print_action(int time, int philo_num, enum e_state action)
+{
+	printf("%d\t%d ", time, philo_num);
+	if (action == TOOK_FORK)
+		printf("has taken a fork\n");
+	else if (action == DEATH)
+		printf("died\n");
+	else if (action == EAT)
+		printf("is eating\n");
+	else if (action == SLEEP)
+		printf("is sleeping\n");
+	else if (action == THINK)
+		printf("is thinking\n");
 }

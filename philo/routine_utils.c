@@ -6,32 +6,15 @@
 /*   By: ihalim <ihalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 17:35:51 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/14 18:49:44 by ihalim           ###   ########.fr       */
+/*   Updated: 2025/01/15 10:47:31 by ihalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	print_action(int time, int philo_num, enum e_state action)
-{
-	printf("%d\t%d ", time, philo_num);
-	if (action == TOOK_FORK)
-		printf("has taken a fork\n");
-	else if (action == DEATH)
-		printf("died\n");
-	else if (action == EAT)
-		printf("is eating\n");
-	else if (action == SLEEP)
-		printf("is sleeping\n");
-	else if (action == THINK)
-		printf("is thinking\n");
-}
-
 int	check_death(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->data->mutex);
-	return (pthread_mutex_unlock(&philo->data->mutex),
-		get_time_elapsed(philo->last_meal_time) > philo->data->time_to_die);
+	return (get_time_elapsed(philo->last_meal_time) > philo->data->time_to_die);
 }
 
 void	monitoring(t_data *data)
@@ -39,18 +22,23 @@ void	monitoring(t_data *data)
 	int	i;
 
 	i = 0;
-	while (!data->stop)
+	while (1)
 	{
+		pthread_mutex_lock(&data->mutex);
+		if (data->stop)
+		{
+			pthread_mutex_unlock(&data->mutex);
+			break ;
+		}
 		if (check_death(&data->philos[i]))
 		{
-			pthread_mutex_lock(&data->mutex);
 			data->stop = 1;
-			data->philos[i].next_state = DEATH;
 			print_action(get_time_elapsed(data->start_time),
 				data->philos[i].philo_num, DEATH);
 			pthread_mutex_unlock(&data->mutex);
 			break ;
 		}
+		pthread_mutex_unlock(&data->mutex);
 		i = (i + 1) % data->num_of_philos;
 		usleep(100);
 	}
@@ -67,4 +55,33 @@ long long	get_current_time(void)
 long long	get_time_elapsed(long long time)
 {
 	return (get_current_time() - time);
+}
+
+void	*routine(void *arg)
+{
+	t_philo	*philo;
+
+	philo = (t_philo *)arg;
+	while (1)
+	{
+		pthread_mutex_lock(&philo->data->mutex);
+		if (check_death(philo) || philo->data->stop)
+		{
+			pthread_mutex_unlock(&philo->data->mutex);
+			break ;
+		}
+		pthread_mutex_unlock(&philo->data->mutex);
+		if (philo->data->num_of_philos > 1
+			&& philo->eat_count >= philo->data->meals_count
+			&& philo->data->meals_count != -1)
+		{
+			philo->data->stop = 1;
+			break ;
+		}
+		if (philo->data->num_of_philos > 1)
+			philo_eat(philo);
+		philo_sleep(philo);
+		philo_think(philo);
+	}
+	return (NULL);
 }
