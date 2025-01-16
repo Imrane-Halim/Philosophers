@@ -6,7 +6,7 @@
 /*   By: ihalim <ihalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 18:03:47 by ihalim            #+#    #+#             */
-/*   Updated: 2025/01/16 11:30:53 by ihalim           ###   ########.fr       */
+/*   Updated: 2025/01/16 13:45:47 by ihalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,9 @@ t_data	*init_struct(int ac, char **av)
 	sem_unlink("print_sem");
 	sem_unlink("waiter_sem");
 	sem_unlink("death_sem");
-	data->forks_sem = sem_open("forks_sem", O_CREAT, 0644, 2);
+	data->forks_sem = sem_open("forks_sem", O_CREAT, 0644, data->num_of_philos);
 	data->print_sem = sem_open("print_sem", O_CREAT, 0644, 1);
-	data->waiter_sem = sem_open("waiter_sem", O_CREAT, 0644, 2);
+	data->waiter_sem = sem_open("waiter_sem", O_CREAT, 0644, data->num_of_philos / 2);
 	data->death_sem = sem_open("death_sem", O_CREAT, 0644, 1);
 	init_philos(data);
 	return (data);

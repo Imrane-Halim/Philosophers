@@ -6,36 +6,55 @@
 /*   By: ihalim <ihalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 17:53:00 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/16 13:39:18 by ihalim           ###   ########.fr       */
+/*   Updated: 2025/01/16 13:44:32 by ihalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	philo_eat(t_data *data, t_philo *philo)
+void    philo_eat(t_data *data, t_philo *philo)
 {
-	sem_t	*print;
-	sem_t	*forks;
-	sem_t	*waiter;
+    sem_t   *print;
+    sem_t   *forks;
+    sem_t   *waiter;
+    sem_t   *death;
 
-	print = sem_open("print_sem", 0);
-	forks = sem_open("forks_sem", 0);
-	waiter = sem_open("waiter_sem", 0);
-	sem_wait(waiter);
-	sem_wait(forks);
-	sem_wait(forks);
-	sem_wait(print);
-	print_action(get_time_elapsed(data->start_time), philo->philo_num,
-		TOOK_FORK);
-	print_action(get_time_elapsed(data->start_time), philo->philo_num, EAT);
-	philo->last_meal_time = get_current_time();
-	philo->eat_count++;
-	sem_post(print);
-	ft_mssleep(data->time_to_eat);
-	sem_post(forks);
-	sem_post(forks);
-	sem_post(waiter);
-	philo->next_state = SLEEP;
+    print = sem_open("print_sem", 0);
+    forks = sem_open("forks_sem", 0);
+    waiter = sem_open("waiter_sem", 0);
+    death = sem_open("death_sem", 0);
+    
+    sem_wait(waiter);  // Only half of philosophers can try to eat at once
+    
+    sem_wait(death);   // Protect last_meal_time access
+    sem_wait(print);
+    if (get_time_elapsed(philo->last_meal_time) > data->time_to_die)
+    {
+        sem_post(print);
+        sem_post(death);
+        sem_post(waiter);
+        return;
+    }
+    sem_post(print);
+    sem_post(death);
+    
+    sem_wait(forks);
+    
+    sem_wait(forks);
+    sem_wait(death);
+    sem_wait(print);
+    print_action(get_time_elapsed(data->start_time), philo->philo_num, TOOK_FORK);
+    print_action(get_time_elapsed(data->start_time), philo->philo_num, EAT);
+    philo->last_meal_time = get_current_time();
+    philo->eat_count++;
+    sem_post(print);
+    sem_post(death);
+    
+    ft_mssleep(data->time_to_eat);
+    sem_post(forks);
+    sem_post(forks);
+    sem_post(waiter);
+    philo->next_state = SLEEP;
 }
 
 void	philo_sleep(t_data *data, t_philo *philo)
