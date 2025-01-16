@@ -6,13 +6,13 @@
 /*   By: ihalim <ihalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 17:53:00 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/15 10:57:32 by ihalim           ###   ########.fr       */
+/*   Updated: 2025/01/16 15:02:39 by ihalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	lock_forks(t_philo *philo, int first_fork, int second_fork)
+static void	lock_forks(t_philo *philo, int first_fork, int second_fork)
 {
 	if (first_fork < second_fork)
 	{
@@ -26,7 +26,7 @@ void	lock_forks(t_philo *philo, int first_fork, int second_fork)
 	}
 }
 
-void	unlock_forks(t_philo *philo, int first_fork, int second_fork)
+static void	unlock_forks(t_philo *philo, int first_fork, int second_fork)
 {
 	if (first_fork < second_fork)
 	{
