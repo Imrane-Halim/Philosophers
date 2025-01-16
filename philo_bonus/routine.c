@@ -6,7 +6,7 @@
 /*   By: ihalim <ihalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 17:53:00 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/16 14:20:46 by ihalim           ###   ########.fr       */
+/*   Updated: 2025/01/16 14:24:10 by ihalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	routine(t_data *data, t_philo *philo)
 		if (data->num_of_philos <= 1)
 			continue ;
 		if (philo->eat_count >= data->meals_count && data->meals_count != -1)
-			break ;
+			exit(0);
 		philo_eat(data, philo);
 		philo_sleep(data, philo);
 		philo_think(data, philo);
