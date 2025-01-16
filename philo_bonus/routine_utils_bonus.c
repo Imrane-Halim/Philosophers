@@ -6,7 +6,7 @@
 /*   By: ihalim <ihalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 17:35:51 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/16 15:13:05 by ihalim           ###   ########.fr       */
+/*   Updated: 2025/01/16 17:39:42 by ihalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,16 @@ void	*monitoring(void *arg)
 			sem_wait(print);
 			print_action(get_time_elapsed(monitor->data->start_time),
 				monitor->philo->philo_num, "died");
-			exit(1);
+			return ((void *)EXIT_FAILURE);
 		}
 		sem_post(death);
-		usleep(100);
+		if (monitor->data->num_of_philos <= 1)
+			continue ;
+		if (monitor->philo->eat_count >= monitor->data->meals_count && monitor->data->meals_count != -1)
+			return ((void *)EXIT_SUCCESS);
+		philo_eat(monitor->data, monitor->philo);
+		philo_sleep(monitor->data, monitor->philo);
+		philo_think(monitor->data, monitor->philo);
 	}
 	return (NULL);
 }

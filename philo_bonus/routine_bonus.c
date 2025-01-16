@@ -6,7 +6,7 @@
 /*   By: ihalim <ihalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 17:53:00 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/16 15:51:22 by ihalim           ###   ########.fr       */
+/*   Updated: 2025/01/16 17:52:19 by ihalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,16 +70,7 @@ void	routine(t_data *data, t_philo *philo)
 	monitor.philo = philo;
 	if (pthread_create(&th_monitor, NULL, monitoring, (void *)(&monitor)) != 0)
 		exit(1);
-	while (1)
-	{
-		if (data->num_of_philos <= 1)
-			continue ;
-		if (philo->eat_count >= data->meals_count && data->meals_count != -1)
-			exit(0);
-		philo_eat(data, philo);
-		philo_sleep(data, philo);
-		philo_think(data, philo);
-	}
+	pthread_join(th_monitor, NULL);
 }
 
 void	run_simulation(t_data *data)
@@ -101,8 +92,6 @@ void	run_simulation(t_data *data)
 		i++;
 	}
 	dead_pid = waitpid(-1, &status, 0);
-	if (WEXITSTATUS(status) != 1)
-		return ;
 	i = -1;
 	while (++i < data->num_of_philos)
 	{

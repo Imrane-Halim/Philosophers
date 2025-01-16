@@ -62,6 +62,9 @@ int			are_valid_args(int ac, char **av);
 t_data		*init_struct(int ac, char **av);
 
 // Simulation Control Functions
+void	philo_eat(t_data *data, t_philo *philo);
+void	philo_sleep(t_data *data, t_philo *philo);
+void	philo_think(t_data *data, t_philo *philo);
 void		run_simulation(t_data *data);
 
 // Time Management Functions
