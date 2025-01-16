@@ -6,7 +6,7 @@
 /*   By: ihalim <ihalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 18:03:47 by ihalim            #+#    #+#             */
-/*   Updated: 2025/01/15 10:52:22 by ihalim           ###   ########.fr       */
+/*   Updated: 2025/01/16 15:01:02 by ihalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ static void	init_philos(t_data *data)
 		data->philos[i].philo_num = i + 1;
 		data->philos[i].last_meal_time = data->start_time;
 		data->philos[i].data = data;
-		data->philos[i].n_forks = 1;
 		pthread_mutex_init(&data->forks[i], NULL);
 		i++;
 	}

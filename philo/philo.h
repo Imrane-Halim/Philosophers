@@ -24,7 +24,6 @@ typedef struct s_data	t_data;
 typedef struct s_philo
 {
 	int					eat_count;
-	int					n_forks;
 	long long			last_meal_time;
 	int					philo_num;
 	t_data				*data;
