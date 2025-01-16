@@ -6,7 +6,7 @@
 /*   By: ihalim <ihalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 17:53:00 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/16 17:52:19 by ihalim           ###   ########.fr       */
+/*   Updated: 2025/01/16 18:16:15 by ihalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ void	routine(t_data *data, t_philo *philo)
 void	run_simulation(t_data *data)
 {
 	int		i;
-	int		status;
 	pid_t	dead_pid;
 
 	i = 0;
@@ -91,11 +90,12 @@ void	run_simulation(t_data *data)
 		usleep(100);
 		i++;
 	}
-	dead_pid = waitpid(-1, &status, 0);
-	i = -1;
-	while (++i < data->num_of_philos)
+	dead_pid = waitpid(-1, NULL, 0);
+	i = 0;
+	while (i < data->num_of_philos)
 	{
 		if (data->philos[i].pid != dead_pid)
 			kill(data->philos[i].pid, SIGKILL);
+		i++;
 	}
 }
