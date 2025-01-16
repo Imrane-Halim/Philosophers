@@ -6,7 +6,7 @@
 /*   By: ihalim <ihalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 18:03:47 by ihalim            #+#    #+#             */
-/*   Updated: 2025/01/16 15:13:10 by ihalim           ###   ########.fr       */
+/*   Updated: 2025/01/16 15:57:22 by ihalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,22 @@ static void	init_philos(t_data *data)
 	}
 }
 
-void	init_semaphores(t_data *data)
+int	init_semaphores(t_data *data)
 {
 	sem_unlink("forks_sem");
 	sem_unlink("print_sem");
 	sem_unlink("death_sem");
 	data->forks_sem = sem_open("forks_sem", O_CREAT, 0644, data->num_of_philos);
+	if (data->forks_sem == SEM_FAILED)
+		return (0);
 	data->print_sem = sem_open("print_sem", O_CREAT, 0644, 1);
+	if (data->print_sem == SEM_FAILED)
+		return (sem_close(data->forks_sem), sem_unlink("forks_sem"), 0);
 	data->death_sem = sem_open("death_sem", O_CREAT, 0644, 1);
+	if (data->death_sem == SEM_FAILED)
+		return (sem_close(data->forks_sem), sem_unlink("forks_sem"),
+			sem_close(data->print_sem), sem_unlink("print_sem"), 0);
+	return (1);
 }
 
 t_data	*init_struct(int ac, char **av)
@@ -64,7 +72,8 @@ t_data	*init_struct(int ac, char **av)
 	data->philos = malloc(sizeof(t_philo) * data->num_of_philos);
 	if (!data->philos)
 		return (free(data), NULL);
-	init_semaphores(data);
+	if (!init_semaphores(data))
+		return (free(data->philos), free(data), NULL);
 	init_philos(data);
 	return (data);
 }
@@ -73,8 +82,10 @@ void	clean_all(t_data *data)
 {
 	sem_close(data->forks_sem);
 	sem_close(data->print_sem);
+	sem_close(data->death_sem);
 	sem_unlink("forks_sem");
 	sem_unlink("print_sem");
+	sem_unlink("death_sem");
 	free(data->philos);
 	free(data);
 }

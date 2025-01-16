@@ -6,7 +6,7 @@
 /*   By: ihalim <ihalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 17:53:00 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/16 15:13:02 by ihalim           ###   ########.fr       */
+/*   Updated: 2025/01/16 15:51:22 by ihalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ void	philo_eat(t_data *data, t_philo *philo)
 	sem_wait(forks);
 	sem_wait(forks);
 	sem_wait(print);
-	print_action(get_time_elapsed(data->start_time), philo->philo_num,
-		"has taken a fork");
-	print_action(get_time_elapsed(data->start_time), philo->philo_num,
-		"is eating");
+	print_action(get_time_elapsed(data->start_time),
+		philo->philo_num, "has taken a fork");
+	print_action(get_time_elapsed(data->start_time),
+		philo->philo_num, "is eating");
 	sem_wait(death);
 	philo->last_meal_time = get_current_time();
 	sem_post(death);
@@ -44,8 +44,8 @@ void	philo_sleep(t_data *data, t_philo *philo)
 
 	print = sem_open("print_sem", 0);
 	sem_wait(print);
-	print_action(get_time_elapsed(data->start_time), philo->philo_num,
-		"is sleeping");
+	print_action(get_time_elapsed(data->start_time),
+		philo->philo_num, "is sleeping");
 	sem_post(print);
 	ft_mssleep(data->time_to_sleep);
 }
@@ -56,8 +56,8 @@ void	philo_think(t_data *data, t_philo *philo)
 
 	print = sem_open("print_sem", 0);
 	sem_wait(print);
-	print_action(get_time_elapsed(data->start_time), philo->philo_num,
-		"is thinking");
+	print_action(get_time_elapsed(data->start_time),
+		philo->philo_num, "is thinking");
 	sem_post(print);
 }
 
@@ -68,7 +68,8 @@ void	routine(t_data *data, t_philo *philo)
 
 	monitor.data = data;
 	monitor.philo = philo;
-	pthread_create(&th_monitor, NULL, monitoring, (void *)(&monitor));
+	if (pthread_create(&th_monitor, NULL, monitoring, (void *)(&monitor)) != 0)
+		exit(1);
 	while (1)
 	{
 		if (data->num_of_philos <= 1)
