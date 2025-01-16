@@ -6,7 +6,7 @@
 /*   By: ihalim <ihalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 17:53:00 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/16 14:02:03 by ihalim           ###   ########.fr       */
+/*   Updated: 2025/01/16 14:14:58 by ihalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,12 @@ void	philo_eat(t_data *data, t_philo *philo)
 	sem_t	*print;
 	sem_t	*forks;
 	sem_t	*waiter;
-
+	sem_t	*death;
+	
 	print = sem_open("print_sem", 0);
 	forks = sem_open("forks_sem", 0);
 	waiter = sem_open("waiter_sem", 0);
+	death = sem_open("death_sem", 0);
 	sem_wait(waiter);
 	sem_wait(forks);
 	sem_wait(forks);
@@ -29,7 +31,9 @@ void	philo_eat(t_data *data, t_philo *philo)
 		philo->philo_num, "has taken a fork");
 	print_action(get_time_elapsed(data->start_time),
 		philo->philo_num, "is eating");
+	sem_wait(death);
 	philo->last_meal_time = get_current_time();
+	sem_post(death);
 	philo->eat_count++;
 	sem_post(print);
 	ft_mssleep(data->time_to_eat);
