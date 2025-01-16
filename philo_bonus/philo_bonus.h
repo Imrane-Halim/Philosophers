@@ -24,6 +24,8 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
+# define RW_PERM 0644
+
 typedef struct s_philo
 {
 	int			eat_count;
