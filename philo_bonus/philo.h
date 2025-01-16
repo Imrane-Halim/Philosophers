@@ -24,20 +24,10 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
-enum				e_state
-{
-	EAT,
-	SLEEP,
-	THINK,
-	DEATH,
-	TOOK_FORK
-};
-
 typedef struct s_philo
 {
 	int				eat_count;
 	long long		last_meal_time;
-	enum e_state	next_state;
 	int				philo_num;
 	pid_t			pid;
 }					t_philo;
@@ -66,7 +56,7 @@ typedef struct s_monitor
 int					ft_atoi(char *s);
 int					are_valid_args(int ac, char **av);
 t_data				*init_struct(int ac, char **av);
-void				print_action(int time, int philo_num, enum e_state action);
+void				print_action(int time, int philo_num, char *action);
 void				run_simulation(t_data *data);
 long long			get_current_time(void);
 long long			get_time_elapsed(long long time);

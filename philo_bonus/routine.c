@@ -6,7 +6,7 @@
 /*   By: ihalim <ihalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 17:53:00 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/16 13:54:47 by ihalim           ###   ########.fr       */
+/*   Updated: 2025/01/16 14:02:03 by ihalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ void	philo_eat(t_data *data, t_philo *philo)
 	sem_wait(forks);
 	sem_wait(print);
 	print_action(get_time_elapsed(data->start_time),
-		philo->philo_num, TOOK_FORK);
+		philo->philo_num, "has taken a fork");
 	print_action(get_time_elapsed(data->start_time),
-		philo->philo_num, EAT);
+		philo->philo_num, "is eating");
 	philo->last_meal_time = get_current_time();
 	philo->eat_count++;
 	sem_post(print);
@@ -36,7 +36,6 @@ void	philo_eat(t_data *data, t_philo *philo)
 	sem_post(forks);
 	sem_post(forks);
 	sem_post(waiter);
-	philo->next_state = SLEEP;
 }
 
 void	philo_sleep(t_data *data, t_philo *philo)
@@ -45,10 +44,9 @@ void	philo_sleep(t_data *data, t_philo *philo)
 
 	print = sem_open("print_sem", 0);
 	sem_wait(print);
-	print_action(get_time_elapsed(data->start_time), philo->philo_num, SLEEP);
+	print_action(get_time_elapsed(data->start_time), philo->philo_num, "is sleeping");
 	sem_post(print);
 	ft_mssleep(data->time_to_sleep);
-	philo->next_state = THINK;
 }
 
 void	philo_think(t_data *data, t_philo *philo)
@@ -57,9 +55,8 @@ void	philo_think(t_data *data, t_philo *philo)
 
 	print = sem_open("print_sem", 0);
 	sem_wait(print);
-	print_action(get_time_elapsed(data->start_time), philo->philo_num, THINK);
+	print_action(get_time_elapsed(data->start_time), philo->philo_num, "is thinking");
 	sem_post(print);
-	philo->next_state = EAT;
 }
 
 void	routine(t_data *data, t_philo *philo)
@@ -72,17 +69,14 @@ void	routine(t_data *data, t_philo *philo)
 	pthread_create(&th_monitor, NULL, monitoring, (void *)(&monitor));
 	while (1)
 	{
-		if (philo->next_state == EAT && data->num_of_philos > 1)
-		{
-			if (philo->eat_count >= data->meals_count
-				&& data->meals_count != -1)
-				break ;
-			philo_eat(data, philo);
-		}
-		else if (philo->next_state == SLEEP)
-			philo_sleep(data, philo);
-		else if (philo->next_state == THINK)
-			philo_think(data, philo);
+		if (data->num_of_philos <= 1)
+			continue ;
+		if (philo->eat_count >= data->meals_count
+			&& data->meals_count != -1)
+			break ;
+		philo_eat(data, philo);
+		philo_sleep(data, philo);
+		philo_think(data, philo);
 	}
 }
 

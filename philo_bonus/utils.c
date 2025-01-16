@@ -6,7 +6,7 @@
 /*   By: ihalim <ihalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 18:03:47 by ihalim            #+#    #+#             */
-/*   Updated: 2025/01/16 13:56:41 by ihalim           ###   ########.fr       */
+/*   Updated: 2025/01/16 14:01:36 by ihalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ static void	init_philos(t_data *data)
 	while (i < data->num_of_philos)
 	{
 		data->philos[i].eat_count = 0;
-		data->philos[i].next_state = THINK;
 		data->philos[i].philo_num = i + 1;
 		data->philos[i].last_meal_time = data->start_time;
 		i++;
