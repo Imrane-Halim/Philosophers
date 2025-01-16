@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   routine_utils.c                                    :+:      :+:    :+:   */
+/*   routine_utils_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ihalim <ihalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 17:35:51 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/16 14:07:25 by ihalim           ###   ########.fr       */
+/*   Updated: 2025/01/16 15:13:05 by ihalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
 void	print_action(int time, int philo_num, char *action)
 {
