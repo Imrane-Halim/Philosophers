@@ -43,7 +43,6 @@ typedef struct s_data
 	t_philo			*philos;
 	sem_t			*forks_sem;
 	sem_t			*print_sem;
-	sem_t			*waiter_sem;
 	sem_t			*death_sem;
 }					t_data;
 
