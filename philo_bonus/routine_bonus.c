@@ -6,7 +6,7 @@
 /*   By: ihalim <ihalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 17:53:00 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/17 14:51:52 by ihalim           ###   ########.fr       */
+/*   Updated: 2025/01/17 18:51:20 by ihalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,24 +65,14 @@ void	routine(t_data *data, t_philo *philo)
 {
 	pthread_t	th_monitor;
 	t_monitor	monitor;
-	sem_t		*death;
 
 	monitor.data = data;
 	monitor.philo = philo;
-	monitor.stop = 0;
-	death = sem_open("death_sem", 0);
 	if (pthread_create(&th_monitor, NULL, monitoring, (void *)(&monitor)) != 0)
 		exit(1);
 	pthread_detach(th_monitor);
 	while (1)
 	{
-		sem_wait(death);
-		if (monitor.stop)
-		{
-			sem_post(death);
-			return ;
-		}
-		sem_post(death);
 		philo_eat(data, philo);
 		philo_sleep(data, philo);
 		philo_think(data, philo);
@@ -92,7 +82,6 @@ void	routine(t_data *data, t_philo *philo)
 void	run_simulation(t_data *data)
 {
 	int		i;
-	pid_t	dead_pid;
 
 	i = 0;
 	while (i < data->num_of_philos)
@@ -106,12 +95,13 @@ void	run_simulation(t_data *data)
 		usleep(100);
 		i++;
 	}
-	dead_pid = waitpid(-1, NULL, 0);
+	while (data->death_sem->__align != 0)
+		;
+	ft_mssleep(data->num_of_philos * data->time_to_die);
 	i = 0;
 	while (i < data->num_of_philos)
 	{
-		if (data->philos[i].pid != dead_pid)
-			kill(data->philos[i].pid, SIGKILL);
+		kill(data->philos[i].pid, SIGKILL);
 		i++;
 	}
 }

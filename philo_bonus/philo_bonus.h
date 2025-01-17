@@ -52,7 +52,6 @@ typedef struct s_monitor
 {
 	t_data		*data;
 	t_philo		*philo;
-	int			stop;
 }				t_monitor;
 
 // Conversion and Validation Functions
