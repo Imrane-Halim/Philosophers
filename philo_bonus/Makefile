@@ -1,4 +1,4 @@
-NAME 	= philo
+NAME 	= philo_bonus
 CFLAGS 	= -Wall -Wextra -Werror -g3
 
 SRC 	= 	philo_bonus.c check_args_bonus.c \
