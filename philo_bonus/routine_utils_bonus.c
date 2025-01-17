@@ -6,7 +6,7 @@
 /*   By: ihalim <ihalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 17:35:51 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/16 18:10:24 by ihalim           ###   ########.fr       */
+/*   Updated: 2025/01/17 10:11:32 by ihalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,11 @@ void	*monitoring(void *arg)
 	while (1)
 	{
 		if (check_death(monitor->data, monitor->philo))
-			return ((void *)EXIT_FAILURE);
+			exit(EXIT_FAILURE);
 		if (monitor->data->num_of_philos <= 1)
 			continue ;
 		if (monitor->philo->eat_count >= monitor->data->meals_count && monitor->data->meals_count != -1)
-			return ((void *)EXIT_SUCCESS);
-		philo_eat(monitor->data, monitor->philo);
-		philo_sleep(monitor->data, monitor->philo);
-		philo_think(monitor->data, monitor->philo);
+			exit(EXIT_SUCCESS);
 	}
 	return (NULL);
 }

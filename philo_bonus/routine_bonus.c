@@ -6,7 +6,7 @@
 /*   By: ihalim <ihalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 17:53:00 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/16 18:16:15 by ihalim           ###   ########.fr       */
+/*   Updated: 2025/01/17 10:12:04 by ihalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,13 @@ void	routine(t_data *data, t_philo *philo)
 	monitor.philo = philo;
 	if (pthread_create(&th_monitor, NULL, monitoring, (void *)(&monitor)) != 0)
 		exit(1);
-	pthread_join(th_monitor, NULL);
+	pthread_detach(th_monitor);
+	while (1)
+	{
+		philo_eat(data, philo);
+		philo_sleep(data, philo);
+		philo_think(data, philo);
+	}
 }
 
 void	run_simulation(t_data *data)
