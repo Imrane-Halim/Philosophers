@@ -6,7 +6,7 @@
 /*   By: ihalim <ihalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 17:53:00 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/17 10:12:04 by ihalim           ###   ########.fr       */
+/*   Updated: 2025/01/17 11:30:48 by ihalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ void	philo_eat(t_data *data, t_philo *philo)
 		philo->philo_num, "is eating");
 	sem_wait(death);
 	philo->last_meal_time = get_current_time();
-	sem_post(death);
 	philo->eat_count++;
+	sem_post(death);
 	sem_post(print);
 	ft_mssleep(data->time_to_eat);
 	sem_post(forks);
@@ -68,10 +68,11 @@ void	routine(t_data *data, t_philo *philo)
 
 	monitor.data = data;
 	monitor.philo = philo;
+	monitor.stop = 0;
 	if (pthread_create(&th_monitor, NULL, monitoring, (void *)(&monitor)) != 0)
 		exit(1);
 	pthread_detach(th_monitor);
-	while (1)
+	while (!monitor.stop)
 	{
 		philo_eat(data, philo);
 		philo_sleep(data, philo);

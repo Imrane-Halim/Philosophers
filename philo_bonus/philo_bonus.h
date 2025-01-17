@@ -1,5 +1,5 @@
 /* ************************************************************************** */
-/*			                                                                  */
+/*				                                                              */
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
@@ -52,32 +52,33 @@ typedef struct s_monitor
 {
 	t_data		*data;
 	t_philo		*philo;
+	int			stop;
 }				t_monitor;
 
 // Conversion and Validation Functions
-int			ft_atoi(char *s);
-int			are_valid_args(int ac, char **av);
+int				ft_atoi(char *s);
+int				are_valid_args(int ac, char **av);
 
 // Initialization Functions
-t_data		*init_struct(int ac, char **av);
+t_data			*init_struct(int ac, char **av);
 
 // Simulation Control Functions
-void	philo_eat(t_data *data, t_philo *philo);
-void	philo_sleep(t_data *data, t_philo *philo);
-void	philo_think(t_data *data, t_philo *philo);
-void		run_simulation(t_data *data);
+void			philo_eat(t_data *data, t_philo *philo);
+void			philo_sleep(t_data *data, t_philo *philo);
+void			philo_think(t_data *data, t_philo *philo);
+void			run_simulation(t_data *data);
 
 // Time Management Functions
-long long	get_current_time(void);
-long long	get_time_elapsed(long long time);
-void		ft_mssleep(long long sleep_time);
+long long		get_current_time(void);
+long long		get_time_elapsed(long long time);
+void			ft_mssleep(long long sleep_time);
 
 // Monitoring Functions
-void		*monitoring(void *data);
-int			check_death(t_data *data, t_philo *philo);
+void			*monitoring(void *data);
+int				check_death(t_data *data, t_philo *philo);
 
 // Utility Functions
-void		print_action(int time, int philo_num, char *action);
-void		clean_all(t_data *data);
+void			print_action(int time, int philo_num, char *action);
+void			clean_all(t_data *data);
 
 #endif

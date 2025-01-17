@@ -6,7 +6,7 @@
 /*   By: ihalim <ihalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 17:35:51 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/17 10:11:32 by ihalim           ###   ########.fr       */
+/*   Updated: 2025/01/17 11:35:35 by ihalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,14 @@ void	print_action(int time, int philo_num, char *action)
 
 int	check_death(t_data *data, t_philo *philo)
 {
-	sem_t *death;
-	sem_t *print;
+	sem_t	*death;
+
 	death = sem_open("death_sem", 0);
-	print = sem_open("print_sem", 0);
 	sem_wait(death);
 	if (get_time_elapsed(philo->last_meal_time) > data->time_to_die)
 	{
-		sem_wait(print);
-		print_action(get_time_elapsed(data->start_time),
-		philo->philo_num, "died");
+		print_action(get_time_elapsed(data->start_time), philo->philo_num,
+			"died");
 		sem_post(death);
 		return (1);
 	}
@@ -44,12 +42,15 @@ void	*monitoring(void *arg)
 	monitor = (t_monitor *)arg;
 	while (1)
 	{
-		if (check_death(monitor->data, monitor->philo))
-			exit(EXIT_FAILURE);
 		if (monitor->data->num_of_philos <= 1)
 			continue ;
-		if (monitor->philo->eat_count >= monitor->data->meals_count && monitor->data->meals_count != -1)
-			exit(EXIT_SUCCESS);
+		if (check_death(monitor->data, monitor->philo)
+			|| (monitor->philo->eat_count >= monitor->data->meals_count
+				&& monitor->data->meals_count != -1))
+		{
+			monitor->stop = 1;
+			break ;
+		}
 	}
 	return (NULL);
 }
