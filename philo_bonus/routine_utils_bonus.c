@@ -6,7 +6,7 @@
 /*   By: ihalim <ihalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 17:35:51 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/17 18:51:44 by ihalim           ###   ########.fr       */
+/*   Updated: 2025/01/17 18:53:17 by ihalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ int	check_death(t_monitor *monitor)
 	if (get_time_elapsed(monitor->philo->last_meal_time)
 		> monitor->data->time_to_die)
 	{
-		death->__align = 0;
 		sem_wait(print);
+		death->__align = 0;
 		print_action(get_time_elapsed(monitor->data->start_time),
 			monitor->philo->philo_num, "died");
 		sem_post(death);
