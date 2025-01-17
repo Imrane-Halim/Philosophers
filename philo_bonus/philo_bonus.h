@@ -75,7 +75,7 @@ void			ft_mssleep(long long sleep_time);
 
 // Monitoring Functions
 void			*monitoring(void *data);
-int				check_death(t_data *data, t_philo *philo);
+int				check_death(t_monitor *monitor);
 
 // Utility Functions
 void			print_action(int time, int philo_num, char *action);
