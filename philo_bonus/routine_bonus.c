@@ -6,7 +6,7 @@
 /*   By: ihalim <ihalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 17:53:00 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/18 10:15:25 by ihalim           ###   ########.fr       */
+/*   Updated: 2025/01/18 10:25:58 by ihalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,21 @@
 
 void	philo_eat(t_data *data, t_philo *philo)
 {
-	sem_t	*print;
 	sem_t	*forks;
 	sem_t	*death;
 
-	print = sem_open("print_sem", 0);
 	forks = sem_open("forks_sem", 0);
 	death = sem_open("death_sem", 0);
 	sem_wait(forks);
 	sem_wait(forks);
-	sem_wait(print);
-	print_action(get_time_elapsed(data->start_time), philo->philo_num,
-		"has taken a fork");
-	print_action(get_time_elapsed(data->start_time), philo->philo_num,
-		"is eating");
+	print_action(get_time_elapsed(data->start_time),
+		philo->philo_num, "has taken a fork");
+	print_action(get_time_elapsed(data->start_time),
+		philo->philo_num, "is eating");
 	sem_wait(death);
 	philo->last_meal_time = get_current_time();
 	philo->eat_count++;
 	sem_post(death);
-	sem_post(print);
 	ft_mssleep(data->time_to_eat);
 	sem_post(forks);
 	sem_post(forks);
@@ -40,25 +36,15 @@ void	philo_eat(t_data *data, t_philo *philo)
 
 void	philo_sleep(t_data *data, t_philo *philo)
 {
-	sem_t	*print;
-
-	print = sem_open("print_sem", 0);
-	sem_wait(print);
-	print_action(get_time_elapsed(data->start_time), philo->philo_num,
-		"is sleeping");
-	sem_post(print);
+	print_action(get_time_elapsed(data->start_time),
+		philo->philo_num, "is sleeping");
 	ft_mssleep(data->time_to_sleep);
 }
 
 void	philo_think(t_data *data, t_philo *philo)
 {
-	sem_t	*print;
-
-	print = sem_open("print_sem", 0);
-	sem_wait(print);
-	print_action(get_time_elapsed(data->start_time), philo->philo_num,
-		"is thinking");
-	sem_post(print);
+	print_action(get_time_elapsed(data->start_time),
+		philo->philo_num, "is thinking");
 }
 
 void	routine(t_data *data, t_philo *philo)
