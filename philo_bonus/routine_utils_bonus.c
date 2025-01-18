@@ -6,7 +6,7 @@
 /*   By: ihalim <ihalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 17:35:51 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/18 18:37:26 by ihalim           ###   ########.fr       */
+/*   Updated: 2025/01/18 22:22:21 by ihalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ void	*monitoring(void *arg)
 		if (monitor->philo->eat_count >= monitor->data->meals_count
 			&& monitor->data->meals_count != -1)
 		{
-			death->__align = 0;
 			sem_post(death);
 			break ;
 		}
