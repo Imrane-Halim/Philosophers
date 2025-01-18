@@ -6,7 +6,7 @@
 /*   By: ihalim <ihalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 17:53:00 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/18 18:33:24 by ihalim           ###   ########.fr       */
+/*   Updated: 2025/01/18 22:59:37 by ihalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ void	routine(t_data *data, t_philo *philo)
 			sem_post(data->full_flag);
 			break ;
 		}
+		if (philo->philo_num % 2 == 0)
+    		usleep(100);
 		philo_eat(data, philo);
 		philo_sleep(data, philo);
 		philo_think(data, philo);
