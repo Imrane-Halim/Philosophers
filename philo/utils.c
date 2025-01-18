@@ -6,18 +6,18 @@
 /*   By: ihalim <ihalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 18:03:47 by ihalim            #+#    #+#             */
-/*   Updated: 2025/01/16 15:01:02 by ihalim           ###   ########.fr       */
+/*   Updated: 2025/01/18 22:18:21 by ihalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	ft_mssleep(long long sleep_time)
+void	ft_mssleep(long long sleep_time, t_data *data)
 {
 	long long	wake_up;
 
 	wake_up = get_current_time() + sleep_time;
-	while (get_current_time() < wake_up)
+	while (get_current_time() < wake_up && !data->stop)
 		usleep(100);
 }
 

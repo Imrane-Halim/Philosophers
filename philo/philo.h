@@ -51,7 +51,7 @@ typedef struct s_data
 int			ft_atoi(char *s);
 long long	get_current_time(void);
 long long	get_time_elapsed(long long time);
-void		ft_mssleep(long long sleep_time);
+void		ft_mssleep(long long sleep_time, t_data *data);
 
 // Argument Validation and Initialization
 int			are_valid_args(int ac, char **av);

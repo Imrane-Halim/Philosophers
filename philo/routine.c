@@ -6,7 +6,7 @@
 /*   By: ihalim <ihalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 17:53:00 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/18 11:13:17 by ihalim           ###   ########.fr       */
+/*   Updated: 2025/01/18 22:19:19 by ihalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	philo_eat(t_philo *philo)
 		philo->eat_count++;
 	}
 	pthread_mutex_unlock(&philo->data->mutex);
-	ft_mssleep(philo->data->time_to_eat);
+	ft_mssleep(philo->data->time_to_eat, philo->data);
 	forks_ctl(philo, first_fork, second_fork, FORKS_UNLOCK);
 }
 
@@ -72,7 +72,7 @@ void	philo_sleep(t_philo *philo)
 		print_action(get_time_elapsed(philo->data->start_time),
 			philo->philo_num, "is sleeping");
 	pthread_mutex_unlock(&philo->data->mutex);
-	ft_mssleep(philo->data->time_to_sleep);
+	ft_mssleep(philo->data->time_to_sleep, philo->data);
 }
 
 void	philo_think(t_philo *philo)
