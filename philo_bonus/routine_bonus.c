@@ -6,7 +6,7 @@
 /*   By: ihalim <ihalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 17:53:00 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/17 18:51:20 by ihalim           ###   ########.fr       */
+/*   Updated: 2025/01/18 10:01:29 by ihalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ void	routine(t_data *data, t_philo *philo)
 	pthread_detach(th_monitor);
 	while (1)
 	{
+		if (data->num_of_philos <= 1)
+			continue ;
 		philo_eat(data, philo);
 		philo_sleep(data, philo);
 		philo_think(data, philo);
@@ -97,7 +99,7 @@ void	run_simulation(t_data *data)
 	}
 	while (data->death_sem->__align != 0)
 		;
-	ft_mssleep(data->num_of_philos * data->time_to_die);
+	ft_mssleep(1000);
 	i = 0;
 	while (i < data->num_of_philos)
 	{

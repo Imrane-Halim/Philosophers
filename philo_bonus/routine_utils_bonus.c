@@ -6,7 +6,7 @@
 /*   By: ihalim <ihalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 17:35:51 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/17 18:53:17 by ihalim           ###   ########.fr       */
+/*   Updated: 2025/01/18 10:00:55 by ihalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,6 @@ void	*monitoring(void *arg)
 	death = sem_open("death_sem", 0);
 	while (1)
 	{
-		if (monitor->data->num_of_philos <= 1)
-			continue ;
 		if (check_death(monitor))
 			return (NULL);
 		sem_wait(death);
