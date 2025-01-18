@@ -46,6 +46,7 @@ typedef struct s_data
 	sem_t		*forks_sem;
 	sem_t		*print_sem;
 	sem_t		*death_sem;
+	sem_t		*full_flag;
 }				t_data;
 
 typedef struct s_monitor

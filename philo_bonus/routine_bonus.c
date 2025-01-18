@@ -6,7 +6,7 @@
 /*   By: ihalim <ihalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 17:53:00 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/18 10:25:58 by ihalim           ###   ########.fr       */
+/*   Updated: 2025/01/18 18:33:24 by ihalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ void	philo_eat(t_data *data, t_philo *philo)
 	death = sem_open("death_sem", 0);
 	sem_wait(forks);
 	sem_wait(forks);
-	print_action(get_time_elapsed(data->start_time),
-		philo->philo_num, "has taken a fork");
-	print_action(get_time_elapsed(data->start_time),
-		philo->philo_num, "is eating");
+	print_action(get_time_elapsed(data->start_time), philo->philo_num,
+		"has taken a fork");
+	print_action(get_time_elapsed(data->start_time), philo->philo_num,
+		"is eating");
 	sem_wait(death);
 	philo->last_meal_time = get_current_time();
 	philo->eat_count++;
@@ -36,15 +36,15 @@ void	philo_eat(t_data *data, t_philo *philo)
 
 void	philo_sleep(t_data *data, t_philo *philo)
 {
-	print_action(get_time_elapsed(data->start_time),
-		philo->philo_num, "is sleeping");
+	print_action(get_time_elapsed(data->start_time), philo->philo_num,
+		"is sleeping");
 	ft_mssleep(data->time_to_sleep);
 }
 
 void	philo_think(t_data *data, t_philo *philo)
 {
-	print_action(get_time_elapsed(data->start_time),
-		philo->philo_num, "is thinking");
+	print_action(get_time_elapsed(data->start_time), philo->philo_num,
+		"is thinking");
 }
 
 void	routine(t_data *data, t_philo *philo)
@@ -61,6 +61,11 @@ void	routine(t_data *data, t_philo *philo)
 	{
 		if (data->num_of_philos <= 1)
 			continue ;
+		if (data->meals_count == philo->eat_count && data->meals_count != -1)
+		{
+			sem_post(data->full_flag);
+			break ;
+		}
 		philo_eat(data, philo);
 		philo_sleep(data, philo);
 		philo_think(data, philo);
@@ -69,7 +74,7 @@ void	routine(t_data *data, t_philo *philo)
 
 void	run_simulation(t_data *data)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	while (i < data->num_of_philos)
@@ -83,7 +88,8 @@ void	run_simulation(t_data *data)
 		usleep(100);
 		i++;
 	}
-	while (data->death_sem->__align != 99)
+	while (data->death_sem->__align != 99
+		&& data->full_flag->__align != data->num_of_philos + 1)
 		;
 	ft_mssleep(50);
 	i = 0;

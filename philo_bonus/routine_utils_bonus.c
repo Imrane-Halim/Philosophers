@@ -6,7 +6,7 @@
 /*   By: ihalim <ihalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 17:35:51 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/18 10:26:21 by ihalim           ###   ########.fr       */
+/*   Updated: 2025/01/18 18:37:26 by ihalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	check_death(t_monitor *monitor)
 		> monitor->data->time_to_die)
 	{
 		sem_wait(print);
-		death->__align = 99;
+		monitor->data->death_sem->__align = 99;
 		printf("%lld\t%d %s\n", get_time_elapsed(monitor->data->start_time),
 			monitor->philo->philo_num, "died");
 		sem_post(death);
