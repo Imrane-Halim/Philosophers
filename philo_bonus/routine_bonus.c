@@ -6,7 +6,7 @@
 /*   By: ihalim <ihalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 17:53:00 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/18 10:01:29 by ihalim           ###   ########.fr       */
+/*   Updated: 2025/01/18 10:15:25 by ihalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,9 +97,9 @@ void	run_simulation(t_data *data)
 		usleep(100);
 		i++;
 	}
-	while (data->death_sem->__align != 0)
+	while (data->death_sem->__align != 99)
 		;
-	ft_mssleep(1000);
+	ft_mssleep(50);
 	i = 0;
 	while (i < data->num_of_philos)
 	{
