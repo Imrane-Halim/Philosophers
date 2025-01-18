@@ -20,6 +20,9 @@
 # include <sys/time.h>
 # include <unistd.h>
 
+# define FORKS_LOCK 1
+# define FORKS_UNLOCK 0
+
 typedef struct s_data	t_data;
 typedef struct s_philo
 {
