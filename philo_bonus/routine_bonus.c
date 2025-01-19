@@ -6,7 +6,7 @@
 /*   By: ihalim <ihalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 17:53:00 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/18 22:59:37 by ihalim           ###   ########.fr       */
+/*   Updated: 2025/01/19 12:05:17 by ihalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ void	philo_eat(t_data *data, t_philo *philo)
 	sem_t	*forks;
 	sem_t	*death;
 
-	forks = sem_open("forks_sem", 0);
-	death = sem_open("death_sem", 0);
+	forks = sem_open(FORKS_SEM, 0);
+	death = sem_open(DEATH_SEM, 0);
 	sem_wait(forks);
 	sem_wait(forks);
 	print_action(get_time_elapsed(data->start_time), philo->philo_num,
@@ -67,7 +67,7 @@ void	routine(t_data *data, t_philo *philo)
 			break ;
 		}
 		if (philo->philo_num % 2 == 0)
-    		usleep(100);
+			usleep(100);
 		philo_eat(data, philo);
 		philo_sleep(data, philo);
 		philo_think(data, philo);

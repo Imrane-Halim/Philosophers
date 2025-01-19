@@ -6,7 +6,7 @@
 /*   By: ihalim <ihalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 18:03:47 by ihalim            #+#    #+#             */
-/*   Updated: 2025/01/18 22:49:50 by ihalim           ###   ########.fr       */
+/*   Updated: 2025/01/19 12:02:26 by ihalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,26 +37,26 @@ static void	init_philos(t_data *data)
 
 int	init_semaphores(t_data *data)
 {
-	sem_unlink("forks_sem");
-	sem_unlink("print_sem");
-	sem_unlink("death_sem");
-	sem_unlink("flags_sem");
-	data->forks_sem = sem_open("forks_sem", O_CREAT, RW_PERM,
+	sem_unlink(FORKS_SEM);
+	sem_unlink(PRINT_SEM);
+	sem_unlink(DEATH_SEM);
+	sem_unlink(FLAGS_SEM);
+	data->forks_sem = sem_open(FORKS_SEM, O_CREAT, RW_PERM,
 			data->num_of_philos);
 	if (data->forks_sem == SEM_FAILED)
 		return (0);
-	data->print_sem = sem_open("print_sem", O_CREAT, RW_PERM, 1);
+	data->print_sem = sem_open(PRINT_SEM, O_CREAT, RW_PERM, 1);
 	if (data->print_sem == SEM_FAILED)
-		return (sem_close(data->forks_sem), sem_unlink("forks_sem"), 0);
-	data->death_sem = sem_open("death_sem", O_CREAT, RW_PERM, 1);
+		return (sem_close(data->forks_sem), sem_unlink(FORKS_SEM), 0);
+	data->death_sem = sem_open(DEATH_SEM, O_CREAT, RW_PERM, 1);
 	if (data->death_sem == SEM_FAILED)
-		return (sem_close(data->forks_sem), sem_unlink("forks_sem"),
-			sem_close(data->print_sem), sem_unlink("print_sem"), 0);
-	data->full_flag = sem_open("flags_sem", O_CREAT, RW_PERM, 1);
+		return (sem_close(data->forks_sem), sem_unlink(FORKS_SEM),
+			sem_close(data->print_sem), sem_unlink(PRINT_SEM), 0);
+	data->full_flag = sem_open(FLAGS_SEM, O_CREAT, RW_PERM, 1);
 	if (data->full_flag == SEM_FAILED)
-		return (sem_close(data->forks_sem), sem_unlink("forks_sem"),
-			sem_close(data->print_sem), sem_unlink("print_sem"),
-			sem_close(data->death_sem), sem_unlink("death_sem"), 0);
+		return (sem_close(data->forks_sem), sem_unlink(FORKS_SEM),
+			sem_close(data->print_sem), sem_unlink(PRINT_SEM),
+			sem_close(data->death_sem), sem_unlink(DEATH_SEM), 0);
 	return (1);
 }
 
@@ -91,10 +91,10 @@ void	clean_all(t_data *data)
 	sem_close(data->print_sem);
 	sem_close(data->death_sem);
 	sem_close(data->full_flag);
-	sem_unlink("forks_sem");
-	sem_unlink("print_sem");
-	sem_unlink("death_sem");
-	sem_unlink("flags_sem");
+	sem_unlink(FORKS_SEM);
+	sem_unlink(PRINT_SEM);
+	sem_unlink(DEATH_SEM);
+	sem_unlink(FLAGS_SEM);
 	free(data->philos);
 	free(data);
 }

@@ -25,6 +25,10 @@
 # include <unistd.h>
 
 # define RW_PERM 0644
+# define FORKS_SEM "forks_sem"
+# define DEATH_SEM "death_sem"
+# define PRINT_SEM "print_sem"
+# define FLAGS_SEM "flags_sem"
 
 typedef struct s_philo
 {

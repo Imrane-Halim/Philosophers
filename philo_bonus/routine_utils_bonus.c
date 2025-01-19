@@ -6,7 +6,7 @@
 /*   By: ihalim <ihalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 17:35:51 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/18 22:22:21 by ihalim           ###   ########.fr       */
+/*   Updated: 2025/01/19 12:03:07 by ihalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	print_action(int time, int philo_num, char *action)
 {
 	sem_t	*print;
 
-	print = sem_open("print_sem", 0);
+	print = sem_open(PRINT_SEM, 0);
 	sem_wait(print);
 	printf("%d\t%d ", time, philo_num);
 	printf(" %s\n", action);
@@ -28,8 +28,8 @@ int	check_death(t_monitor *monitor)
 	sem_t	*death;
 	sem_t	*print;
 
-	print = sem_open("print_sem", 0);
-	death = sem_open("death_sem", 0);
+	print = sem_open(PRINT_SEM, 0);
+	death = sem_open(DEATH_SEM, 0);
 	sem_wait(death);
 	if (get_time_elapsed(monitor->philo->last_meal_time)
 		> monitor->data->time_to_die)
@@ -51,7 +51,7 @@ void	*monitoring(void *arg)
 	sem_t		*death;
 
 	monitor = (t_monitor *)arg;
-	death = sem_open("death_sem", 0);
+	death = sem_open(DEATH_SEM, 0);
 	while (1)
 	{
 		if (check_death(monitor))
