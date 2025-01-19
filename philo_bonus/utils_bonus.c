@@ -6,7 +6,7 @@
 /*   By: ihalim <ihalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 18:03:47 by ihalim            #+#    #+#             */
-/*   Updated: 2025/01/19 12:02:26 by ihalim           ###   ########.fr       */
+/*   Updated: 2025/01/19 15:05:50 by ihalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,10 +91,6 @@ void	clean_all(t_data *data)
 	sem_close(data->print_sem);
 	sem_close(data->death_sem);
 	sem_close(data->full_flag);
-	sem_unlink(FORKS_SEM);
-	sem_unlink(PRINT_SEM);
-	sem_unlink(DEATH_SEM);
-	sem_unlink(FLAGS_SEM);
 	free(data->philos);
 	free(data);
 }

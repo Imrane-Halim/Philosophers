@@ -6,7 +6,7 @@
 /*   By: ihalim <ihalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 17:53:00 by marvin            #+#    #+#             */
-/*   Updated: 2025/01/19 12:05:17 by ihalim           ###   ########.fr       */
+/*   Updated: 2025/01/19 15:03:42 by ihalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,37 +14,32 @@
 
 void	philo_eat(t_data *data, t_philo *philo)
 {
-	sem_t	*forks;
-	sem_t	*death;
-
-	forks = sem_open(FORKS_SEM, 0);
-	death = sem_open(DEATH_SEM, 0);
-	sem_wait(forks);
-	sem_wait(forks);
-	print_action(get_time_elapsed(data->start_time), philo->philo_num,
-		"has taken a fork");
-	print_action(get_time_elapsed(data->start_time), philo->philo_num,
-		"is eating");
-	sem_wait(death);
+	sem_wait(data->forks_sem);
+	sem_wait(data->forks_sem);
+	print_action(get_time_elapsed(data->start_time),
+		philo->philo_num, "has taken a fork");
+	print_action(get_time_elapsed(data->start_time),
+		philo->philo_num, "is eating");
+	sem_wait(data->death_sem);
 	philo->last_meal_time = get_current_time();
 	philo->eat_count++;
-	sem_post(death);
+	sem_post(data->death_sem);
 	ft_mssleep(data->time_to_eat);
-	sem_post(forks);
-	sem_post(forks);
+	sem_post(data->forks_sem);
+	sem_post(data->forks_sem);
 }
 
 void	philo_sleep(t_data *data, t_philo *philo)
 {
-	print_action(get_time_elapsed(data->start_time), philo->philo_num,
-		"is sleeping");
+	print_action(get_time_elapsed(data->start_time),
+		philo->philo_num, "is sleeping");
 	ft_mssleep(data->time_to_sleep);
 }
 
 void	philo_think(t_data *data, t_philo *philo)
 {
-	print_action(get_time_elapsed(data->start_time), philo->philo_num,
-		"is thinking");
+	print_action(get_time_elapsed(data->start_time),
+		philo->philo_num, "is thinking");
 }
 
 void	routine(t_data *data, t_philo *philo)
